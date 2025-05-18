@@ -1,6 +1,19 @@
 import { Router } from "express";
+import db from "../config/db.js";
 
 const router = Router();
+
+async function testQuery() {
+  try {
+    const [rows] = await db.query('SELECT 1');  
+    console.log('✅ Query succeeded:', rows);  
+  } catch (err) {
+    console.error('❌ Query failed:', err);
+    process.exit(1);
+  } finally {
+    await db.end();
+  }
+}
 
 router.route('/')
   .get(async (req, res) => {
@@ -28,4 +41,8 @@ router.route('/search')
     const value = req.body.value + "$"
     res.status(200).send({user, value})
   })
+
+router.route('/sql')
+  .get(testQuery)
+
 export default router;
