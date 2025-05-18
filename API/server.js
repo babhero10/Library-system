@@ -3,8 +3,6 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import session from 'express-session';
-import { RedisStore } from 'connect-redis';
-import { createClient } from 'redis';   // Import the redis client
 import TestRouter from './routers/test.js';
 import multer from 'multer';
 import path from 'path';
@@ -19,31 +17,11 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.set('trust proxy', 1); // Important if behind a reverse proxy (Heroku, Nginx, etc.)
 
-// Initialize Redis Client
-const redisClient = createClient({
-  // url: 'redis://alice:foobared@awesome.redis.server:6380' // Example if your Redis server requires URL/auth
-  // By default, it connects to redis://localhost:6379
-  // Add `legacyMode: true` ONLY if you are forced to by an older library that doesn't support modern redis client.
-  // connect-redis v7+ should work fine without legacyMode.
-});
-
-redisClient.on('error', (err) => console.error('Redis Client Error:', err));
-redisClient.on('connect', () => console.log('Attempting to connect to Redis...'));
-redisClient.on('ready', () => console.log('Redis client is ready.'));
-redisClient.on('end', () => console.log('Redis client connection has ended.'));
-
+// Removed Redis Client initialization and event listeners
 
 // --- ASYNCHRONOUS SERVER SETUP ---
 async function startServer() {
   try {
-    await redisClient.connect(); // Connect to Redis
-    console.log('Successfully connected to Redis!');
-
-    // Initialize session store AFTER Redis client is connected
-    const redisStoreInstance = new RedisStore({
-      client: redisClient,
-      prefix: 'sess:', // Optional: add a prefix for your session keys in Redis
-    });
 
     // SECURITY MIDDLEWARE
     app.use(helmet());
@@ -62,10 +40,9 @@ async function startServer() {
     // STATIC FILES
     app.use('/images', express.static(path.join(__dirname, 'images')));
 
-    // SESSIONS (now uses redisStoreInstance)
+    // SESSIONS (now uses default MemoryStore)
     app.use(session({
       name: 'sessionId',
-      store: redisStoreInstance,
       secret: process.env.SESSION_SECRET, // Ensure this is a strong, random string in .env
       resave: false,
       saveUninitialized: false,
@@ -120,11 +97,7 @@ async function startServer() {
     app.listen(port, () => console.log(`🚀 Server running at http://localhost:${port}`));
 
   } catch (err) {
-    console.error("Failed to initialize application or connect to Redis:", err);
-    // Gracefully shutdown redis client if it was connected or partially connected.
-    if (redisClient && redisClient.isOpen) {
-        await redisClient.quit();
-    }
+    console.error("Failed to initialize application:", err); // Updated error message
     process.exit(1); // Exit if critical setup fails
   }
 }
