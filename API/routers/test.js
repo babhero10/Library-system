@@ -10,8 +10,6 @@ async function testQuery() {
   } catch (err) {
     console.error('❌ Query failed:', err);
     process.exit(1);
-  } finally {
-    await db.end();
   }
 }
 
