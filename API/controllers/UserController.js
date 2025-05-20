@@ -1,6 +1,5 @@
 // src/controllers/userController.js
-//import UserService from '../services/userService.js';
-import UserService from '../services/userService.js';
+import UserService from '../services/UserService.js';
 class AuthController {
   /**
    * Handle user signup

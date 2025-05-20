@@ -3,8 +3,7 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import session from 'express-session';
-//import TestRouter from './routers/test.js';
-import TestRouter from './routers/user.js';
+import userRouter from './routers/user.js';
 import multer from 'multer';
 import path from 'path';
 import UserController from './controllers/UserController.js';
@@ -95,7 +94,10 @@ async function startServer() {
     });
 
     // START Express App
-    const port = process.env.PORT || 5001;
+    app.use('/user', userRouter);
+    app.get('/user/:id', UserController.getProfile);
+
+    const port = process.env.PORT || 5000;
     app.listen(port, () => console.log(`🚀 Server running at http://localhost:${port}`));
 
   } catch (err) {
@@ -103,16 +105,5 @@ async function startServer() {
     process.exit(1); // Exit if critical setup fails
   }
 }
-app.use(express.json());
-app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: false,
-}));
 
-app.use('/user', TestRouter);
-app.get('/user/:id', UserController.getProfile);
-const port = 5001;
-app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
-// Call the async function to start the server
 startServer();
