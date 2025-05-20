@@ -1,4 +1,4 @@
-import { Router } from "express";
+/*import { Router } from "express";
 import db from "../config/db.js";
 
 const router = Router();
@@ -44,3 +44,4 @@ router.route('/sql')
   .get(testQuery)
 
 export default router;
+*/

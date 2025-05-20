@@ -3,9 +3,11 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import session from 'express-session';
-import TestRouter from './routers/test.js';
+//import TestRouter from './routers/test.js';
+import TestRouter from './routers/user.js';
 import multer from 'multer';
 import path from 'path';
+import UserController from './controllers/UserController.js';
 import { fileURLToPath } from 'url'; // For __dirname in ES Modules
 import dotenv from 'dotenv';
 dotenv.config();
@@ -70,7 +72,7 @@ async function startServer() {
     const upload = multer({ storage, fileFilter: imageFilter, limits: { fileSize: 1 * 1024 * 1024 } }); // 1MB limit
 
     app.get('/', (req, res) => res.json({ message: 'Welcome! API is running.' }));
-    app.use('/test', TestRouter);
+    //app.use('/test', TestRouter);
 
     // SESSION CHECK / LOGOUT
     app.get('/logout', (req, res) => {
@@ -93,7 +95,7 @@ async function startServer() {
     });
 
     // START Express App
-    const port = process.env.PORT || 5000;
+    const port = process.env.PORT || 5001;
     app.listen(port, () => console.log(`🚀 Server running at http://localhost:${port}`));
 
   } catch (err) {
@@ -101,6 +103,16 @@ async function startServer() {
     process.exit(1); // Exit if critical setup fails
   }
 }
+app.use(express.json());
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false,
+}));
 
+app.use('/user', TestRouter);
+app.get('/user/:id', UserController.getProfile);
+const port = 5001;
+app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
 // Call the async function to start the server
 startServer();

@@ -1,6 +1,6 @@
 // src/models/User.js
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/db';
+import sequelize from '../config/db.js';
 
 class User extends Model {
   // The comparePassword method will now also likely move to the service,
