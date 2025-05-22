@@ -10,7 +10,7 @@ const AuthorPage = () => {
         <div className="library-title">Library System</div>
         <div className="search-bar">
           <input type="text" placeholder="Search" />
-          <img src={require('../assets/message.png')} alt="Search Icon" />
+          <img src={require('../assets/search_icon.png')} alt="Search Icon" />
         </div>
         <div className="greeting">Hi, Rowan</div>
       </div>
