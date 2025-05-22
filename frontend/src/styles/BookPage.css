@@ -1,0 +1,128 @@
+/* Book Page Container */
+.book-page-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #D0B39D;
+}
+
+/* Book Page */
+.book-page {
+  position: relative;
+  width: 992px;
+  height: 600px;
+  background: #D0B39D;
+}
+
+/* Book Cover */
+.book-cover {
+  position: absolute;
+  width: 228px;
+  height: 249px;
+  left: 17px;
+  top: 51px;
+  background: url(../assets/library.jpg) no-repeat center center;
+  background-size: cover;
+}
+
+/* Book Details */
+.book-details {
+  position: absolute;
+  width: 559px;
+  height: 468px;
+  left: 327px;
+  top: 52px;
+  background: #E9DED4;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.details-title {
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  font-size: 28px;
+  color: #000000;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Book Info */
+.book-info {
+  font-family: 'Lora', serif;
+  font-size: 20px;
+  line-height: 32px;
+  color: #000000;
+  margin-bottom: 12px;
+  display: flex;             
+  align-items: flex-start;   
+}
+
+.attribute {
+  font-weight: 600;
+  min-width: 180px;           
+  display: inline-block;
+}
+
+.value {
+  font-weight: 400;
+  flex: 1;                    
+  display: inline-block;
+  margin-left: 0;            
+}
+
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.clickable:hover {
+  color: #596288;
+}
+
+/* Description */
+.book-description {
+  margin-bottom: 20px;
+  max-height: 164px;
+ 
+}
+
+.book-description .attribute {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 1px;
+  
+}
+
+.description-text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 5px;
+  cursor: default; 
+}
+
+/* Borrow Button */
+.borrow-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.borrow-button button {
+  width: 159px;
+  height: 46px;
+  background: #596288;
+  border-radius: 28px;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #000000;
+  border: none;
+  cursor: pointer;
+}
+
+.borrow-button button:hover {
+  background: #4a5570;
+}

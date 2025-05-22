@@ -1,0 +1,143 @@
+.contact-page {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: #D0B39D;
+  font-family: 'Karla', sans-serif;
+  overflow: hidden;
+}
+
+.contact-left {
+  flex: 2.5;
+  height: 100%;
+  overflow: hidden;
+}
+
+.contact-image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.contact-right {
+  flex: 2;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  background-color: #D0B39D;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-heading {
+  font-family: 'Kavoon', cursive;
+  font-size: 32px;
+  color: #383030;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.contact-form {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.input-group label {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #000;
+  max-width: fit-content;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon img {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+}
+
+.input-with-icon input {
+  width: 100%;
+  max-width: 400px;
+  height: 56px;
+  padding-left: 56px;
+  background: #F4F0F1;
+  border-radius: 28px;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+}
+
+.textarea-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+textarea {
+  width: 100%;
+  height: 142px;
+  padding: 20px 20px 20px 48px; /* padding-left for icon space */
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 1px solid #000;
+  resize: none;
+  background: #FFFFFF;
+  color: #000;
+}
+
+/* Chat icon styled like placeholder inside textarea */
+.chat-icon {
+  position: absolute;
+  top: 20px;
+  left: 16px;
+  width: 24px;
+  height: 24px;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.submit-button {
+  width: 160px;
+  height: 48px;
+  background: #596288;
+  border-radius: 28px;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  align-self: center;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #4a5570;
+}
+
+.error-text {
+  color: #820002;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 6px;
+  margin-left: 10px;
+}

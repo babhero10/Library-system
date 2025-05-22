@@ -1,0 +1,115 @@
+.reservation-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: #D0B39D;
+  font-family: 'Lora', serif;
+  overflow: hidden;
+}
+
+/* 50% Image section */
+.reservation-image {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.reservation-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 50% Form section */
+.reservation-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* center vertically */
+  align-items: center;       /* center horizontally */
+  background: #D0B39D;
+  position: relative;
+  padding: 20px;
+}
+
+.reservation-title {
+  font-family: 'Kavoon', cursive;
+  font-size: 32px;
+  color: #000000;
+  margin-bottom: 40px;
+}
+
+/* Label Styles */
+.label-text {
+  font-weight: 600;
+  font-size: 25px;
+  color: #000000;
+  align-self: flex-start;
+  margin-left: 20%;
+  margin-bottom: 8px;
+}
+
+.input-box {
+  position: relative;
+  width: 80%;
+  max-width: 392px;
+  height: 68px;
+  background: #F4F0F1;
+  border-radius: 28px;
+  margin-bottom: 15px; /* Reduced margin for better spacing with the error message */
+  display: flex;
+  align-items: center;
+}
+
+.calendar-icon {
+  position: absolute;
+  left: 22px;
+  width: 29px;
+  height: 29px;
+}
+
+.date-input {
+  width: 100%;
+  height: 100%;
+  padding-left: 70px;
+  padding-right: 20px;
+  border: none;
+  background: transparent;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #000;
+  outline: none;
+}
+
+/* Button */
+.reserve-button {
+  width: 159px;
+  height: 46px;
+  background: #596288;
+  border-radius: 28px;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #000000;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.reserve-button:hover {
+  background: #4a5570;
+}
+
+/* Error Message */
+.error-message {
+  color:  #820002;;
+  font-size: 14px; /* Smaller font size for better alignment */
+  font-weight: 600;
+  margin-top: 2px; /* Space between input and error message */
+  text-align: left; /* Align error text to the left */
+  width: 80%;
+  max-width: 392px;
+  background: transparent;
+  margin-bottom: 15px; /* Space between error and next input field */
+}
