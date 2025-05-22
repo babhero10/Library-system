@@ -78,8 +78,8 @@ User.init({
     attributes: { exclude: ['password_hash'] },
   },
   scopes: {
-    withPassword: { // Scope to explicitly include password_hash when needed
-      attributes: { include: ['password_hash'] },
+    withPassword: {
+      attributes: {},
     },
   },
 });

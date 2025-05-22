@@ -1,6 +1,6 @@
 // src/models/Reservation.js
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/db';
+import sequelize from '../config/db.js';
 
 class Reservation extends Model {}
 

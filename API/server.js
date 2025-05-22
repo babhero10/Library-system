@@ -4,9 +4,9 @@ import helmet from 'helmet';
 import cors from 'cors';
 import session from 'express-session';
 import userRouter from './routers/user.js';
+import reserveRouter from './routers/reservation.js';
 import multer from 'multer';
 import path from 'path';
-import UserController from './controllers/UserController.js';
 import { fileURLToPath } from 'url'; // For __dirname in ES Modules
 import dotenv from 'dotenv';
 dotenv.config();
@@ -95,7 +95,7 @@ async function startServer() {
 
     // START Express App
     app.use('/user', userRouter);
-    app.get('/user/:id', UserController.getProfile);
+    app.use('/reserve', reserveRouter);
 
     const port = process.env.PORT || 5000;
     app.listen(port, () => console.log(`🚀 Server running at http://localhost:${port}`));

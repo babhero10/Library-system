@@ -4,6 +4,8 @@ import userController from '../controllers/UserController.js';
 import { requireAuth, requireRole } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
+router.get('/:id', userController.getProfile);
+
 /**
  * @route POST /api/users/signup
  * @desc Register a new user
