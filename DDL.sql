@@ -69,7 +69,6 @@ CREATE TABLE Borrowings (
     due_date DATE NOT NULL,
     return_date TIMESTAMP NULL,
     fine_amount DECIMAL(10, 2) DEFAULT 0.00,
-    extended_count INT DEFAULT 0,
     notes TEXT,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE RESTRICT,
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE RESTRICT 
@@ -82,23 +81,9 @@ CREATE TABLE Reservations (
     reservation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR(20) NOT NULL DEFAULT 'pending'
         CHECK (status IN ('pending', 'available', 'fulfilled', 'cancelled', 'expired')),
-    notification_sent_at TIMESTAMP NULL,
     expires_at TIMESTAMP NULL,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Notifications (
-    notification_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT UNSIGNED NOT NULL,
-    message TEXT NOT NULL,
-    type VARCHAR(50) NOT NULL CHECK (type IN ('reservation_available', 'due_date_reminder', 'overdue_alert', 'general_announcement')),
-    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'sent', 'read', 'failed')),
-    related_reservation_id BIGINT UNSIGNED REFERENCES Reservations(reservation_id) ON DELETE SET NULL,
-    related_borrowing_id BIGINT UNSIGNED REFERENCES Borrowings(borrowing_id) ON DELETE SET NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    sent_at TIMESTAMP NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 
 CREATE INDEX idx_users_email ON Users(email);
@@ -121,7 +106,3 @@ CREATE INDEX idx_borrowings_return_date ON Borrowings(return_date);
 CREATE INDEX idx_reservations_user_id ON Reservations(user_id);
 CREATE INDEX idx_reservations_book_id ON Reservations(book_id);
 CREATE INDEX idx_reservations_status ON Reservations(status);
-
-CREATE INDEX idx_notifications_user_id ON Notifications(user_id);
-CREATE INDEX idx_notifications_status ON Notifications(status);
-CREATE INDEX idx_notifications_type ON Notifications(type);

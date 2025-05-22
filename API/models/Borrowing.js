@@ -46,10 +46,6 @@ Borrowing.init({
     type: DataTypes.DECIMAL(10, 2),
     defaultValue: 0.00
   },
-  extended_count: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0
-  },
   notes: {
     type: DataTypes.TEXT
   }

@@ -40,10 +40,6 @@ Reservation.init({
       isIn: [['pending', 'available', 'fulfilled', 'cancelled', 'expired']]
     }
   },
-  notification_sent_at: {
-    type: DataTypes.DATE,
-    allowNull: true
-  },
   expires_at: {
     type: DataTypes.DATE,
     allowNull: true
