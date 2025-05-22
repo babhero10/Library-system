@@ -18,13 +18,9 @@ const AboutUsPage = () => {
           At Library System, we make it easy for readers to explore a wide collection of books and reserve them online for free. 
           Our goal is to connect users with the books they love through a simple and convenient platform. Whether you're searching 
           for fiction, non-fiction, academic, or reference materials, our system lets you browse, check availability, and reserve 
-          titles with just a few clicks. We’re here to make accessing books easier and more enjoyable for everyone.
+          titles with just a few clicks. We're here to make accessing books easier and more enjoyable for everyone.
         </p>
-        {/*<button className="contact-button" onClick={() => navigate('/contact')}> 
-          Contact Us
-        </button>*/}
-
-        <button className="contact-button" onClick={() => navigate('/book/:id')}> 
+        <button className="contact-button" onClick={() => navigate('/book/:id')}>
           Contact Us
         </button>
       </div>
