@@ -135,12 +135,11 @@ class AuthorController {
       // Handle image update
       if (req.file) {
         updateData.author_image_url = `/images/${req.file.filename}`;
-        // Optional: Delete old image file
-        // const existingAuthor = await AuthorService.getAuthorById(id);
-        // if (existingAuthor.success && existingAuthor.data.author_image_url) {
-        //   const oldImagePath = path.join(__dirname, '../../..', existingAuthor.data.author_image_url);
-        //   try { await fs.unlink(oldImagePath); } catch (e) { console.warn("Old image not found or could not be deleted:", oldImagePath); }
-        // }
+        const existingAuthor = await AuthorService.getAuthorById(id);
+        if (existingAuthor.success && existingAuthor.data.author_image_url) {
+          const oldImagePath = path.join(__dirname, '../../..', existingAuthor.data.author_image_url);
+          try { await fs.unlink(oldImagePath); } catch (e) { console.warn("Old image not found or could not be deleted:", oldImagePath); }
+        }
       } else if (updateData.author_image_url === '' || updateData.author_image_url === null) {
         updateData.author_image_url = null;
       }
@@ -186,17 +185,15 @@ class AuthorController {
         });
       }
       
-      // Optional: Get author data before deletion to delete associated image
-      // const authorResult = await AuthorService.getAuthorById(id);
+      const authorResult = await AuthorService.getAuthorById(id);
 
       const result = await AuthorService.deleteAuthor(id);
 
       if (result.success) {
-        // Optional: Delete associated image file
-        // if (authorResult.success && authorResult.data.author_image_url) {
-        //   const imagePath = path.join(__dirname, '../../..', authorResult.data.author_image_url);
-        //   try { await fs.unlink(imagePath); } catch (e) { console.warn("Image not found or could not be deleted:", imagePath); }
-        // }
+        if (authorResult.success && authorResult.data.author_image_url) {
+          const imagePath = path.join(__dirname, '../../..', authorResult.data.author_image_url);
+          try { await fs.unlink(imagePath); } catch (e) { console.warn("Image not found or could not be deleted:", imagePath); }
+        }
         return res.status(200).json({
           success: true,
           message: result.message,

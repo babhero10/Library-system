@@ -7,6 +7,7 @@ import userRouter from './routers/user.js';
 import reserveRouter from './routers/reservation.js';
 import bookRouter from './routers/book.js';
 import authorRouter from './routers/author.js';
+import borrowRouter from './routers/borrowing.js';
 import path from 'path';
 import { fileURLToPath } from 'url'; // For __dirname in ES Modules
 import dotenv from 'dotenv';
@@ -90,7 +91,8 @@ async function startServer() {
     app.use('/user', userRouter);
     app.use('/reserve', reserveRouter);
     app.use('/book', bookRouter); // bookRouter will now use the imported upload middleware
-    app.use('/authors', authorRouter);
+    app.use('/author', authorRouter);
+    app.use('/borrow', borrowRouter);
     
 
     const port = process.env.PORT || 5000;
