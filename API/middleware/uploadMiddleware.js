@@ -34,6 +34,12 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     // Use 'cover-image' as a prefix for clarity, and preserve original extension
+     let prefix = 'image';
+    if (file.fieldname === 'cover_image') {
+      prefix = 'cover-image';
+    } else if (file.fieldname === 'author_image') {
+      prefix = 'author-image';
+    }
     cb(null, `cover-image-${uniqueSuffix}${path.extname(file.originalname)}`);
   }
 });
