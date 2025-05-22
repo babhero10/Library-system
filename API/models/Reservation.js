@@ -1,6 +1,8 @@
 // src/models/Reservation.js
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/db.js';
+import User from './User.js'; // Ensure User model is imported
+import Book from './Book.js'; // Ensure Book model is imported
 
 class Reservation extends Model {}
 
@@ -10,10 +12,25 @@ Reservation.init({
     autoIncrement: true,
     primaryKey: true
   },
-  // user_id, book_id, copy_assigned_id will be added by associations
+  user_id: {
+    type: DataTypes.BIGINT.UNSIGNED,
+    allowNull: false,
+    references: {
+      model: User, // Assumes User model is correctly defined and imported
+      key: 'user_id'
+    }
+  },
+  book_id: {
+    type: DataTypes.BIGINT.UNSIGNED,
+    allowNull: false,
+    references: {
+      model: Book, // Assumes Book model is correctly defined and imported
+      key: 'book_id'
+    }
+  },
   reservation_date: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
+    type: DataTypes.DATE, // Sequelize maps this to DATETIME/TIMESTAMP in the DB
+    allowNull: false      // This is the user's intended pickup date
   },
   status: {
     type: DataTypes.STRING(20),
@@ -24,16 +41,18 @@ Reservation.init({
     }
   },
   notification_sent_at: {
-    type: DataTypes.DATE
+    type: DataTypes.DATE,
+    allowNull: true
   },
   expires_at: {
-    type: DataTypes.DATE
+    type: DataTypes.DATE,
+    allowNull: true
   }
 }, {
   sequelize,
   modelName: 'Reservation',
   tableName: 'Reservations',
-  timestamps: false
+  timestamps: false // Your DDL for Reservations doesn't have created_at/updated_at
 });
 
 export default Reservation;

@@ -16,7 +16,7 @@ router.post(
 // Example: GET /api/reservations?status=pending&user_id=123&sortBy=reservation_date&sortOrder=ASC&page=1&pageSize=10
 router.get(
   '/',
-  requireRole(['admin', 'librarian']),
+  requireRole('admin'),
   reservationController.getAll
 );
 
@@ -30,7 +30,7 @@ router.get(
 // Update the status of a reservation
 router.patch(
   '/:reservation_id/status',
-  requireRole(['admin', 'librarian']),
+  requireRole('admin'),
   reservationController.updateStatus
 );
 

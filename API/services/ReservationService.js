@@ -1,5 +1,7 @@
 // src/services/ReservationService.js
 import Reservation from '../models/Reservation.js';
+import User from '../models/User.js';
+import Book from '../models/Book.js';
 
 // Define constants for better readability and maintainability
 const PICKUP_EXPIRY_DAYS = 2; // User has X days to pick up a book once 'available'
@@ -7,15 +9,16 @@ const PENDING_RESERVATION_EXPIRY_DAYS = 1; // 'pending' reservation expires if n
 
 class ReservationService {
   async makeReservation(reserveRequest) {
-    const reservationDateInput = reserveRequest.reservation_date;
-    const reservationDate = new Date(reservationDateInput);
-
-    if (isNaN(reservationDate.getTime())) {
-      // This is a validation error before even hitting the database.
-      throw new Error('Invalid reservation_date format. Please use a valid date string.');
-    }
-
     try {
+      const reservationDateInput = reserveRequest.reservation_date;
+      const reservationDate = new Date(reservationDateInput);
+
+      const today = new Date();
+      today.setHours(0,0,0,0); // Compare dates only
+      if (reservationDate < today) {
+        throw new Error('Reservation date cannot be in the past.');
+      }
+
       const newRes = await Reservation.create({
         user_id: reserveRequest.user_id,
         book_id: reserveRequest.book_id,
@@ -23,7 +26,7 @@ class ReservationService {
         expires_at: new Date(
           reservationDate.getFullYear(),
           reservationDate.getMonth(),
-          reservationDate.getDate() + PENDING_RESERVATION_EXPIRY_DAYS,
+          reservationDate.getDate() + PENDING_RESERVATION_EXPIRY_DAYS, // Adds days to the user's chosen date
           0, 0, 0, 0
         ),
         status: 'pending'

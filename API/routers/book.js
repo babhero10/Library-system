@@ -16,7 +16,6 @@ bookRouter.use(requireAuth);
 // Admin-only routes
 bookRouter.use(requireRole('admin'));
 bookRouter.post('/', BookController.createBook);
-bookRouter.put('/:id', BookController.updateBook);
 bookRouter.patch('/:id', BookController.updateBook);
 bookRouter.delete('/:id', BookController.deleteBook);
 

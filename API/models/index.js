@@ -1,103 +1,96 @@
 // src/models/index.js
-import sequelize from '../config/db'; // Your Sequelize instance
-import User from './User';
-import Author from './Author';
-import Genre from './Genre';
-import Book from './Book';
-import BookCopy from './BookCopy';
-import Borrowing from './Borrowing';
-import Reservation from './Reservation';
-import Notification from './Notification';
+import sequelize from '../config/db.js';
+import User from './User.js';
+import Author from './Author.js';
+import Genre from './Genre.js';
+import Book from './Book.js';
+import Borrowing from './Borrowing.js';
+import Reservation from './Reservation.js';
+import Notification from './Notification.js';
 
 // --- Define Associations ---
 
-// User associations
-User.hasMany(Borrowing, { foreignKey: 'user_id' });
+// User associations (Borrowing part is correct, others unchanged)
+User.hasMany(Borrowing, { foreignKey: 'user_id', onDelete: 'RESTRICT' });
 Borrowing.belongsTo(User, { foreignKey: 'user_id' });
 
-User.hasMany(Reservation, { foreignKey: 'user_id' });
+User.hasMany(Reservation, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 Reservation.belongsTo(User, { foreignKey: 'user_id' });
 
-User.hasMany(Notification, { foreignKey: 'user_id' });
+User.hasMany(Notification, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 Notification.belongsTo(User, { foreignKey: 'user_id' });
 
 
-// Author and Book (Many-to-Many)
-Author.belongsToMany(Book, {
-  through: 'BookAuthors', // Name of the junction table
-  foreignKey: 'author_id', // Foreign key in BookAuthors that points to Author
-  otherKey: 'book_id',     // Foreign key in BookAuthors that points to Book
-  timestamps: false        // Junction table has no timestamps
+// Author and Book (One-to-Many) (Unchanged)
+Author.hasMany(Book, { foreignKey: 'author_id', onDelete: 'RESTRICT' });
+Book.belongsTo(Author, { foreignKey: 'author_id' });
+
+
+// --- Book and Genre Associations (UPDATED) ---
+
+// 1. Book's Main/Required Genre (One-to-Many: Genre can be the main genre for many Books)
+// This uses the `genre_id` foreign key in the `Books` table.
+Genre.hasMany(Book, {
+  foreignKey: 'genre_id',     // Changed from primary_genre_id
+  as: 'MainGenreBooks',       // Alias
+  onDelete: 'RESTRICT',       // Matches SQL FK constraint for Books.genre_id
+  onUpdate: 'CASCADE'
 });
-Book.belongsToMany(Author, {
-  through: 'BookAuthors',
+Book.belongsTo(Genre, {
+  foreignKey: 'genre_id',     // Changed from primary_genre_id
+  as: 'MainGenre',            // Alias to fetch the main genre of a book
+  // `allowNull: false` for this foreign key is defined in the Book model.
+});
+
+// --- Book and Borrowing Associations (NEW/UPDATED) ---
+// One Book can have many Borrowings
+Book.hasMany(Borrowing, {
   foreignKey: 'book_id',
-  otherKey: 'author_id',
-  timestamps: false
+  onDelete: 'RESTRICT' // Matches your SQL FK constraint for Borrowings.book_id
 });
-
-
-// Genre and Book (Many-to-Many)
-Genre.belongsToMany(Book, {
-  through: 'BookGenres',
-  foreignKey: 'genre_id',
-  otherKey: 'book_id',
-  timestamps: false
+// One Borrowing belongs to one Book
+Borrowing.belongsTo(Book, {
+  foreignKey: 'book_id'
 });
-Book.belongsToMany(Genre, {
-  through: 'BookGenres',
-  foreignKey: 'book_id',
-  otherKey: 'genre_id',
-  timestamps: false
-});
+// --- End Book and Borrowing Associations ---
 
 
-// Book and BookCopy (One-to-Many)
-Book.hasMany(BookCopy, { foreignKey: 'book_id' });
-BookCopy.belongsTo(Book, { foreignKey: 'book_id' });
-
-
-// BookCopy and Borrowing (One-to-Many, a copy can be borrowed multiple times over history)
-BookCopy.hasMany(Borrowing, { foreignKey: 'copy_id' });
-Borrowing.belongsTo(BookCopy, { foreignKey: 'copy_id' });
-
-
-// BookCopy and Reservation (One-to-One or One-to-Many for assigned copy)
-// A reservation can have one copy assigned to it (when status is 'available')
-BookCopy.hasOne(Reservation, { foreignKey: 'copy_assigned_id', as: 'AssignedReservation' }); // A copy can be assigned to one reservation at a time
-Reservation.belongsTo(BookCopy, { foreignKey: 'copy_assigned_id', as: 'AssignedCopy' }); // A reservation is for one assigned copy
-
-// Book and Reservation (One-to-Many: A book title can have many reservations)
-Book.hasMany(Reservation, { foreignKey: 'book_id' });
+// Book and Reservation (One-to-Many) (Unchanged)
+Book.hasMany(Reservation, { foreignKey: 'book_id', onDelete: 'CASCADE' });
 Reservation.belongsTo(Book, { foreignKey: 'book_id' });
 
 
-// Notification relationships (Optional, makes querying easier)
-Reservation.hasMany(Notification, { foreignKey: 'related_reservation_id', as: 'ReservationNotifications' });
+// Notification relationships (Unchanged for these, still related to Borrowing by ID)
+Reservation.hasMany(Notification, { foreignKey: 'related_reservation_id', as: 'ReservationNotifications', onDelete: 'SET NULL' });
 Notification.belongsTo(Reservation, { foreignKey: 'related_reservation_id', as: 'RelatedReservation' });
 
-Borrowing.hasMany(Notification, { foreignKey: 'related_borrowing_id', as: 'BorrowingNotifications' });
+Borrowing.hasMany(Notification, { foreignKey: 'related_borrowing_id', as: 'BorrowingNotifications', onDelete: 'SET NULL' });
 Notification.belongsTo(Borrowing, { foreignKey: 'related_borrowing_id', as: 'RelatedBorrowing' });
 
 
 // --- Sync and Export ---
 const db = {
-  sequelize, // The Sequelize instance
+  sequelize,
   User,
   Author,
   Genre,
   Book,
-  BookCopy,
   Borrowing,
   Reservation,
   Notification
 };
 
-// Optional: Function to sync all models (useful for development)
-// In production, you might use migrations instead.
+// Optional: Function to sync all models
 db.syncModels = async (options = {}) => {
   try {
-    await sequelize.sync(options);
+    // Ensure sync order respects FKs
+    await User.sync(options);
+    await Author.sync(options);
+    await Genre.sync(options); // Genre before Book
+    await Book.sync(options);    // Book depends on Author, Genre
+    await Borrowing.sync(options); // Borrowing depends on User, Book
+    await Reservation.sync(options); // Reservation depends on User, Book
+    await Notification.sync(options); // Notification depends on User, Reservation, Borrowing
 
     console.log('All models were synchronized successfully.');
   } catch (error) {

@@ -13,11 +13,14 @@ class ReservationController {
         return res.status(400).json({ message: 'Missing required fields: user_id, book_id, reservation_date.' });
       }
 
+      reserveRequest.user_id = user_id
+
       const newReservation = await reservationService.makeReservation(reserveRequest);
       res.status(201).json(newReservation);
     } catch (error) {
       console.error('Controller Error - Create Reservation:', error.message);
-      if (error.message.startsWith('Invalid reservation_date format') || error.message.startsWith('Validation Error:')) {
+      if (error.message.startsWith('Invalid reservation_date format') || error.message.startsWith('Validation Error:')
+          || error.message.startsWith('Reservation date')) {
         return res.status(400).json({ message: error.message });
       }
       // For other errors, let a generic error handler middleware deal with it, or send 500

@@ -5,6 +5,7 @@ import cors from 'cors';
 import session from 'express-session';
 import userRouter from './routers/user.js';
 import reserveRouter from './routers/reservation.js';
+import bookRouter from './routers/book.js';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url'; // For __dirname in ES Modules
@@ -96,6 +97,7 @@ async function startServer() {
     // START Express App
     app.use('/user', userRouter);
     app.use('/reserve', reserveRouter);
+    app.use('/book', bookRouter);
 
     const port = process.env.PORT || 5000;
     app.listen(port, () => console.log(`🚀 Server running at http://localhost:${port}`));
