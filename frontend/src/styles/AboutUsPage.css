@@ -23,8 +23,10 @@
   padding: 60px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
   background-color: #D0B39D;
+  text-align: center; /* Center text */
 }
 
 .about-title {
@@ -32,6 +34,7 @@
   font-size: 32px;
   color: #000;
   margin-bottom: 20px;
+  margin-right: 180px;
 }
 
 .about-description {
@@ -40,6 +43,7 @@
   line-height: 1.4;
   color: #000;
   margin-bottom: 40px;
+  max-width: 80%; /* Limit width for better readability */
 }
 
 .contact-button {
