@@ -95,7 +95,7 @@ CREATE TABLE Reservations (
     notification_sent_at TIMESTAMP NULL,
     expires_at TIMESTAMP NULL,
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Notifications (
