@@ -20,16 +20,14 @@ Book.init({
       key: 'author_id'
     }
   },
-  // --- THIS IS THE CRITICAL PART ---
-  genre_id: {                       // <<<< ENSURE THIS IS DEFINED
+  genre_id: {
     type: DataTypes.BIGINT.UNSIGNED,
-    allowNull: false,               // Your DDL has genre_id as NOT NULL
+    allowNull: false,
     references: {
-      model: Genre,                 // Reference the Genre model
+      model: Genre, 
       key: 'genre_id'
     }
   },
-  // --- END CRITICAL PART ---
   title: {
     type: DataTypes.STRING(255),
     allowNull: false
@@ -50,7 +48,6 @@ Book.init({
     type: DataTypes.INTEGER,
     defaultValue: 1
   },
-  // ol_work_key: { ... } // If you still have this from previous versions
 }, {
   sequelize,
   modelName: 'Book',
