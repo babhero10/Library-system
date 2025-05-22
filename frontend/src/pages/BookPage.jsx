@@ -55,7 +55,7 @@ const BookPage = () => {
           </div>
           
           <div className="borrow-button">
-            <button onClick={() => navigate('/login')}>Borrow</button>
+            <button onClick={() => navigate('/reserve')}>Borrow</button>
           </div>
         </div>
       </div>
