@@ -3,14 +3,12 @@ import React from 'react';
 import '../styles/AboutUsPage.css';
 import aboutUsImage from '../assets/Aboutus.jpg'; // Ensure this path is correct
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header'; // IMPORT HEADER
 
 const AboutUsPage = () => {
   const navigate = useNavigate();
 
   return (
     <div className="au-page-container"> {/* Changed to au- for About Us prefix */}
-      <Header userName="Rowan" /> {/* ADD HEADER */}
 
       <main className="au-content-wrapper"> {/* Main scrollable area */}
         <div className="au-split-layout">

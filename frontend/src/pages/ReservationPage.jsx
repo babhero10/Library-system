@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../styles/ReservationPage.css';
-// import calendarIcon from '../assets/calendar.png'; // You removed this import, make sure it's not needed or re-add if it is
 import defaultLibraryImage from '../assets/image.png'; // Default image for the page background half
 
 // Helper function to parse query parameters

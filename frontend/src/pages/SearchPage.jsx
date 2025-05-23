@@ -1,7 +1,6 @@
 // src/pages/SearchPage.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
 import Book from '../components/Book';
 import '../styles/SearchPage.css';
 
@@ -101,7 +100,6 @@ function SearchPage() {
 
   return (
     <div className="sp-page-container">
-      <Header userName="Rowan" />
       <main className="sp-content-wrapper">
         <h1 className="sp-title">
           Search Results {displaySearchTerm && `for "${displaySearchTerm}"`}

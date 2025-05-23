@@ -1,7 +1,6 @@
 // src/pages/AuthorPage.jsx
 import React from 'react';
 import BookList from '../components/BookList'; // <--- IMPORT BookList
-import Header from '../components/Header'; // IMPORTED HEADER
 import '../styles/AuthorPage.css';
 
 // Assume you have these assets
@@ -42,8 +41,6 @@ const AuthorPage = () => {
 
   return (
     <div className="author-page-container">
-
-      <Header userName="Rowan" />
 
       {/* Main Page Content */}
       <div className="ap-content-wrapper">

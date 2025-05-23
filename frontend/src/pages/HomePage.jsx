@@ -1,6 +1,5 @@
 // src/pages/HomePage.jsx
 import React from 'react';
-import Header from '../components/Header'; // IMPORTED HEADER
 import BookList from '../components/BookList';
 import '../styles/HomePage.css'; // Styles specific to HomePage content
 
@@ -75,7 +74,6 @@ function HomePage() {
 
   return (
     <div className="page-container">
-      <Header userName="Rowan" />
 
       <main className="homepage-content">
 

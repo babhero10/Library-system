@@ -1,7 +1,6 @@
 // src/pages/ContactUsPage.jsx
 import React, { useState } from 'react';
 import '../styles/ContactUsPage.css'; // Or AuthForm.css + ContactUsPageSpecific.css
-import Header from '../components/Header'; // IMPORT HEADER
 import leftImage from '../assets/Contactus.jpg'; // Ensure path is correct
 import mailIcon from '../assets/envelope.png';
 import idCardIcon from '../assets/user.png';
@@ -43,7 +42,6 @@ const ContactUsPage = () => {
 
   return (
     <div className="cu-page-container"> {/* Changed to cu- for Contact Us prefix */}
-      <Header userName="Rowan" /> {/* ADD HEADER */}
 
       <main className="cu-content-wrapper"> {/* Main scrollable area */}
         <div className="cu-split-layout"> {/* Similar to About Us for consistency */}

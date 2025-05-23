@@ -7,7 +7,7 @@ body { margin: 0; font-family: 'Karla', sans-serif; background-color: #D0B39D; c
 
 .cu-content-wrapper {
   flex-grow: 1; display: flex; justify-content: center; align-items: center;
-  padding-top: calc(0px + 30px); /* !!! HEADER_HEIGHT + desired space !!! */
+  padding-top: calc(100px + 30px); /* !!! HEADER_HEIGHT + desired space !!! */
   padding-bottom: 30px; padding-left: 20px; padding-right: 20px;
   box-sizing: border-box;
 }

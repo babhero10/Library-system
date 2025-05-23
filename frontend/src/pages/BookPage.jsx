@@ -3,7 +3,6 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/BookPage.css'; // Ensure this path is correct
 import bookCoverImage from '../assets/B1.jpg'; // Static import for the example book
-import Header from '../components/Header';
 
 // Static book data for this example
 const bookData = {
@@ -46,7 +45,6 @@ const BookPage = () => {
   if (!currentBook) {
     return (
       <div className="bp-page-container">
-        <Header userName="Rowan" />
         <main className="bp-main-content-area">
           <div className="bp-content-card" style={{ textAlign: 'center', padding: '40px' }}>
             <p>Book not found.</p>
@@ -59,7 +57,6 @@ const BookPage = () => {
 
   return (
     <div className="bp-page-container">
-      <Header userName="Rowan" />
       
       <main className="bp-main-content-area">
         <div className="bp-content-card">
