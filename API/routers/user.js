@@ -47,18 +47,17 @@ router.get('/admin', requireAuth, requireRole('admin'), (req, res) => {
   });
 });
 
-router.post('/signup', userController.signup);
-
 router.get('/status', (req, res) => {
   if (req.session && req.session.user) {
-    return res.status(200).json({
-      isAuthenticated: true,
-      user: req.session.user
-    });
+    res.json({ loggedIn: true, user: req.session.user });
   } else {
-    return res.status(401).json({ message: 'Not authenticated' });
+    // User is not logged in
+    res.json({ loggedIn: false }).status(401);
   }
 });
+
+router.post('/signup', userController.signup);
+
 
 
 export default router;

@@ -37,10 +37,7 @@ async function startServer() {
 
     // CORS
     const corsOptions = {
-      origin: function (origin, callback) {
-        // Reflect the request origin, if it's present
-        callback(null, origin || true); // Allow origin if present, or allow if no origin (e.g. curl)
-      },
+      origin: 'http://localhost:3000', // Your React app's actual origin
       credentials: true,
     };
     app.use(cors(corsOptions));
@@ -51,7 +48,11 @@ async function startServer() {
 
     // STATIC FILES (ensure this path is correct relative to server.js)
     // If server.js is in project root, and 'images' folder is also in project root
-    app.use('/images', express.static(path.join(__dirname, 'images')));
+    const projectRootImagesDir = path.join(__dirname, '../images'); // Goes up from API/ to Library-system/, then into images/
+
+    console.log(`Serving static images from: ${projectRootImagesDir}`); // Add this log for debugging
+
+    app.use('/images', express.static(projectRootImagesDir));
 
     // SESSIONS
     app.use(session({
@@ -69,26 +70,6 @@ async function startServer() {
     }));
 
     app.get('/', (req, res) => res.json({ message: 'Welcome! API is running.' }));
-
-    // SESSION CHECK / LOGOUT
-    app.get('/logout', (req, res) => {
-      req.session.destroy(err => {
-        if (err) {
-          console.error("Session destruction error:", err);
-          return res.status(500).json({ message: 'Could not log out, please try again.' });
-        }
-        res.clearCookie('sessionId', { path: '/' });
-        res.json({ message: 'Logged out successfully' });
-      });
-    });
-
-    app.get('/checkSession', (req, res) => {
-      if (req.session && req.session.user) {
-        res.json({ loggedIn: true, user: req.session.user });
-      } else {
-        res.json({ loggedIn: false });
-      }
-    });
 
     // START Express App
     app.use('/user', userRouter);
