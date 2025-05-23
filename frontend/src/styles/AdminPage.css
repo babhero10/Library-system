@@ -1,0 +1,493 @@
+/* === BASE STYLES === */
+body {
+  margin: 0;
+  font-family: 'Karla', sans-serif;
+  background: #D0B39D;
+}
+
+/* === USERS VIEW === */
+.users-view {
+  padding: 20px;
+  background: #E9DED4;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.users-table {
+  display: grid;
+  grid-template-columns: 0.5fr 1.5fr 1.8fr 1.2fr 1.2fr 1.2fr 1.8fr;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.users-header {
+  display: contents;
+  font-weight: bold;
+}
+
+.users-header .users-cell {
+  background: #9E7A6C;
+  color: white;
+  padding: 12px;
+  text-align: center;
+}
+
+.users-row {
+  display: contents;
+}
+
+.users-row:nth-child(odd) .users-cell {
+  background: #f7f1ec;
+}
+
+.users-row:nth-child(even) .users-cell {
+  background: white;
+}
+
+.users-cell {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+}
+
+.users-cell input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* === BOOKS VIEW === */
+.books-view {
+  padding: 20px;
+  background: #E9DED4;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.books-table {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 2fr 1.8fr;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.books-header {
+  display: contents;
+  font-weight: bold;
+}
+
+.books-header .books-cell {
+  background: #9E7A6C;
+  color: white;
+  padding: 12px;
+  text-align: center;
+}
+
+.books-row {
+  display: contents;
+}
+
+.books-row:nth-child(odd) .books-cell {
+  background: #f7f1ec;
+}
+
+.books-row:nth-child(even) .books-cell {
+  background: white;
+}
+
+.books-cell {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+}
+
+.books-cell input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.book-image {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+}
+
+/* === COMMON BUTTON STYLES === */
+.action-button {
+  padding: 6px 12px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: opacity 0.3s ease;
+}
+
+.action-button:hover {
+  opacity: 0.8;
+}
+
+.action-button {
+  background: #596288;
+}
+
+.delete-button {
+  background: #d9534f;
+}
+
+.edit-btn {
+  background: #4a90e2 !important;
+}
+
+/* === ADD BUTTONS === */
+.add-book-btn,
+.add-user-btn {
+  margin-top: 20px;
+  background: #596288;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-book-btn:hover,
+.add-user-btn:hover {
+  background: #485073;
+}
+
+/* === FORMS === */
+.user-form,
+.book-form {
+  margin-top: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* === GENRE DROPDOWN === */
+.genre-dropdown {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  .users-table,
+  .books-table {
+    grid-template-columns: 1fr;
+    display: block;
+  }
+
+  .users-header,
+  .books-header {
+    display: none;
+  }
+
+  .users-row,
+  .books-row {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .users-cell,
+  .books-cell {
+    padding: 8px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .users-cell::before,
+  .books-cell::before {
+    content: attr(data-label);
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .actions-cell {
+    justify-content: flex-start;
+  }
+}
+
+/* === RESERVATIONS TABLE === */
+.reservations-view {
+  padding: 20px;
+  background: #E9DED4;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.reservations-table {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.reservations-header {
+  display: contents;
+  font-weight: bold;
+}
+
+.reservations-header .reservations-cell {
+  background: #9E7A6C;
+  color: white;
+  padding: 12px;
+  text-align: center;
+}
+
+.reservations-row {
+  display: contents;
+}
+
+.reservations-row:nth-child(odd) .reservations-cell {
+  background: #f7f1ec;
+}
+
+.reservations-row:nth-child(even) .reservations-cell {
+  background: white;
+}
+
+.reservations-cell {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+}
+
+.status-dropdown {
+  width: 100%;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* === BORROW TABLE === */
+.borrow-view {
+  padding: 20px;
+  background: #E9DED4;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.borrow-table {
+  display: grid;
+  grid-template-columns: 0.8fr 1.5fr 1.5fr 1.8fr 1.5fr 1fr; /* Added 6th column for checkbox */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.borrow-header {
+  display: contents;
+  font-weight: bold;
+}
+
+.borrow-header .borrow-cell {
+  background: #9E7A6C;
+  color: white;
+  padding: 12px;
+  text-align: center;
+}
+
+.borrow-row {
+  display: contents;
+}
+
+.borrow-row:nth-child(odd) .borrow-cell {
+  background: #f7f1ec;
+}
+
+.borrow-row:nth-child(even) .borrow-cell {
+  background: white;
+}
+
+.borrow-cell {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Align text left except checkbox column */
+.borrow-cell:not(:last-child) {
+  justify-content: flex-start;
+}
+
+/* Checkbox cell */
+.borrow-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style checkboxes */
+.borrow-cell input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* === FORM === */
+.borrow-form {
+  margin-top: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  max-width: 600px;
+}
+
+.borrow-form .form-group {
+  margin-bottom: 15px;
+}
+
+.borrow-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.borrow-form .form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* --- Error Text --- */
+.error-text {
+  color: #D83A56;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 6px;
+  padding-left: 5px;
+  min-height: 18px;
+  display: block;
+}
+
+/* === CATEGORY CARDS === */
+.admin-categories-cards {
+  display: flex;
+  justify-content: space-between;
+  max-width: 992px;
+  margin: 40px auto 0;
+  position: relative;
+}
+
+.category-card {
+  width: 220px;
+  height: 174px;
+  background: #E9DED4;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.category-card:hover {
+  transform: scale(1.03);
+}
+
+.card-img {
+  width: 106px;
+  height: 106px;
+  margin: 15px auto 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.books-icon {
+  background-image: url('../assets/books-stack-of-three-removebg-preview.png');
+}
+
+.users-icon {
+  background-image: url('../assets/group-removebg-preview.png');
+}
+
+.reservations-icon {
+  background-image: url('../assets/reservation-removebg-preview.png');
+  width: 100px;
+  height: 100px;
+}
+
+.borrow-icon {
+  background-image: url('../assets/book-removebg-preview.png');
+  width: 112px;
+  height: 112px;
+}
+
+.card-label {
+  font-family: 'Karla', sans-serif;
+  font-size: 20px;
+  color: #000;
+}
+
+/* === CONTENT CONTAINER === */
+.admin-content {
+  padding: 20px;
+  max-width: 992px;
+  margin: 0 auto;
+}
+
+.add-borrow-btn {
+  margin-top: 20px;
+  background: #596288;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-borrow-btn:hover {
+  background: #485073;
+}
