@@ -4,30 +4,25 @@ import BookList from '../components/BookList';
 import { getAllBooks, API_BASE_URL } from '../services/apiService'; // Import API_BASE_URL
 import '../styles/HomePage.css';
 
-// Helper function to construct full image URLs using the imported API_BASE_URL
-// This function assumes API_BASE_URL does NOT have a trailing slash.
+// Helper function to construct full image URLs
 const constructFullImageUrl = (relativePathFromServer) => {
   if (!relativePathFromServer) {
-    return '/default-book-cover.png'; // Path to a default cover in your frontend's public folder
+    return `${process.env.PUBLIC_URL}/default-book-cover.png`;
   }
-  // If the path from server somehow already became a full URL (less likely with your setup)
   if (relativePathFromServer.startsWith('http://') || relativePathFromServer.startsWith('https://')) {
     return relativePathFromServer;
   }
-  // Ensure relativePathFromServer starts with a '/' if it doesn't, to avoid issues with path.join logic
   const pathSegment = relativePathFromServer.startsWith('/') ? relativePathFromServer : `/${relativePathFromServer}`;
-  
-  // API_BASE_URL is 'http://localhost:8000' (no trailing slash from apiService.js)
-  return `${API_BASE_URL}${pathSegment}`; 
+  return `${API_BASE_URL}${pathSegment}`;
 };
 
-const LoadingIndicator = () => <p className="loading-message">Loading books...</p>;
-const ErrorMessage = ({ message }) => <p className="error-message">{message}</p>;
+const LoadingIndicator = () => <p className="loading-message">Loading books, please wait...</p>;
+const ErrorMessage = ({ message }) => <p className="error-message api-error-message">{message}</p>;
 
 function HomePage() {
   const [trendingBooks, setTrendingBooks] = useState([]);
-  const [fictionBooks, setFictionBooks] = useState([]);
-  const [romanceBooks, setRomanceBooks] = useState([]);
+  // State to hold books grouped by genre: { "Science Fiction": [book1, book2], "Romance": [book3, book4], ... }
+  const [booksByGenre, setBooksByGenre] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -36,67 +31,122 @@ function HomePage() {
       setIsLoading(true);
       setError(null);
       try {
-        const result = await getAllBooks(1, 100); // Fetch books
+        const result = await getAllBooks(1, 200); // Fetch more books to have enough for various genres
         
         if (result.success && result.data && Array.isArray(result.data.books)) {
           const processedBooks = result.data.books.map(book => ({
             id: book.book_id,
-            // Use the helper to construct the full URL for the image
-            imageSrc: constructFullImageUrl(book.cover_image_url), 
+            imageSrc: constructFullImageUrl(book.cover_image_url),
             title: book.title,
             bookPathId: String(book.book_id),
-            genre: book.genre, 
+            // Crucially, use the genre name from your API response
+            genre: book.genre_name_display || "Uncategorized", // Fallback for books without a genre display name
+            // author: book.author_name_display, // If you need author
           }));
           
-          // Categorization logic (same as before)
-          setTrendingBooks(processedBooks.slice(0, 10));
-          setFictionBooks(
-            processedBooks.filter(book => 
-              (typeof book.genre === 'string' && book.genre.toLowerCase().includes('fiction')) ||
-              (Array.isArray(book.genre) && book.genre.some(g => typeof g === 'string' && g.toLowerCase().includes('fiction')))
-            ).slice(0, 10)
-          );
-          setRomanceBooks(
-            processedBooks.filter(book => 
-              (typeof book.genre === 'string' && book.genre.toLowerCase().includes('romance')) ||
-              (Array.isArray(book.genre) && book.genre.some(g => typeof g === 'string' && g.toLowerCase().includes('romance')))
-            ).slice(0, 10)
-          );
+          // --- "Trending Now" Logic ---
+          // For example, take the first 10-15 books as trending, or implement more complex logic
+          const shuffledForTrending = [...processedBooks].sort(() => 0.5 - Math.random());
+          setTrendingBooks(shuffledForTrending.slice(0, 12)); // Show 12 trending books
+
+          // --- Dynamic Genre Categorization ---
+          const genresMap = {};
+          processedBooks.forEach(book => {
+            const genreName = book.genre; // This should be a string like "Science Fiction"
+            if (genreName) {
+              if (!genresMap[genreName]) {
+                genresMap[genreName] = [];
+              }
+              // Add book to genre list, but avoid duplicates if a book appears multiple times
+              // and limit the number of books per genre for display on homepage
+              if (genresMap[genreName].length < 10) { // Show up to 10 books per genre list
+                 // Check for duplicates by ID within this specific genre list
+                if (!genresMap[genreName].find(b => b.id === book.id)) {
+                    genresMap[genreName].push(book);
+                }
+              }
+            }
+          });
+          setBooksByGenre(genresMap);
 
         } else {
           setError(result.error || 'Could not fetch books data or data format is incorrect.');
-          setTrendingBooks([]); setFictionBooks([]); setRomanceBooks([]);
+          setTrendingBooks([]);
+          setBooksByGenre({});
         }
       } catch (err) {
-        console.error("Failed to fetch books:", err);
+        console.error("HomePage: Failed to fetch books:", err);
         setError(err.message || 'An error occurred while loading books.');
-        setTrendingBooks([]); setFictionBooks([]); setRomanceBooks([]);
+        setTrendingBooks([]);
+        setBooksByGenre({});
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchBooksAndCategorize();
-  }, []); // Empty dependency array, run once on mount
+  }, []);
 
-  // ... (Loading, Error, No Books to Show JSX remains the same) ...
-  if (isLoading) { /* ... */ }
-  if (error) { /* ... */ }
-  const noBooksToShow = trendingBooks.length === 0 && fictionBooks.length === 0 && romanceBooks.length === 0;
-  if (noBooksToShow && !isLoading) { /* ... */ }
+  if (isLoading) {
+    return (
+      <div className="page-container homepage-container">
+        <main className="homepage-content">
+          <LoadingIndicator />
+        </main>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="page-container homepage-container">
+        <main className="homepage-content">
+          <ErrorMessage message={error} />
+        </main>
+      </div>
+    );
+  }
+
+  const noBooksInCategories = Object.keys(booksByGenre).every(genre => booksByGenre[genre].length === 0);
+  const noBooksToShow = trendingBooks.length === 0 && noBooksInCategories;
+
+  if (noBooksToShow && !isLoading) {
+    return (
+      <div className="page-container homepage-container">
+        <main className="homepage-content">
+          <p className="info-message">No books available at the moment. Please check back later.</p>
+        </main>
+      </div>
+    );
+  }
 
   return (
-    <div className="page-container">
+    <div className="page-container homepage-container">
       <main className="homepage-content">
+        {/* Trending Now Section (remains curated or first N books) */}
         {trendingBooks.length > 0 && (
-          <BookList title="Trending Now" books={trendingBooks} listId="trending" />
+          <BookList
+            title="Trending Now"
+            books={trendingBooks}
+            listId="trending"
+          />
         )}
-        {fictionBooks.length > 0 && (
-          <BookList title="Fiction Favorites" books={fictionBooks} listId="fiction" />
-        )}
-        {romanceBooks.length > 0 && (
-          <BookList title="Popular Romance" books={romanceBooks} listId="romance" />
-        )}
+
+        {/* Dynamically Rendered BookLists for Each Genre */}
+        {Object.entries(booksByGenre)
+          // Optional: Filter out genres with too few books for display if desired
+          // .filter(([genreName, booksInGenre]) => booksInGenre.length > 2) 
+          .map(([genreName, booksInGenre]) => {
+            if (booksInGenre.length === 0) return null; // Don't render list if no books for this genre
+            return (
+              <BookList
+                key={genreName} // Use genre name as key (ensure it's unique)
+                title={genreName} // Display the genre name as the title
+                books={booksInGenre}
+                listId={`genre-${genreName.toLowerCase().replace(/\s+/g, '-')}`} // Create a unique ID for Swiper
+              />
+            );
+        })}
       </main>
     </div>
   );

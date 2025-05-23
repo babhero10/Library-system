@@ -1,24 +1,26 @@
-// src/models/index.js
 import sequelize from '../config/db.js';
 import User from './User.js';
 import Author from './Author.js';
-import Genre from './Genre.js';
+import Genre from './Genre.js'; // Make sure Genre model is correctly defined with genre_id as PK
 import Book from './Book.js';
 import Borrowing from './Borrowing.js';
 import Reservation from './Reservation.js';
+// Import BookGenre if you plan to use it for many-to-many, though not directly causing this error
+// import BookGenre from './BookGenre.js';
+
 
 // --- Define Associations ---
 
-// User associations (Borrowing part is correct, others unchanged)
+// User associations
 User.hasMany(Borrowing, { foreignKey: 'user_id', onDelete: 'RESTRICT' });
 Borrowing.belongsTo(User, { foreignKey: 'user_id' });
 
 User.hasMany(Reservation, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 Reservation.belongsTo(User, { foreignKey: 'user_id' });
 
-// Author and Book (One-to-Many) (Unchanged)
+// Author and Book (One-to-Many)
 Author.hasMany(Book, { foreignKey: 'author_id', onDelete: 'RESTRICT' });
-Book.belongsTo(Author, { foreignKey: 'author_id' });
+Book.belongsTo(Author, { foreignKey: 'author_id', as: 'Author' }); // Added 'as' for consistency if used in BookService
 
 
 // --- Book and Genre Associations (UPDATED) ---
@@ -26,33 +28,47 @@ Book.belongsTo(Author, { foreignKey: 'author_id' });
 // 1. Book's Main/Required Genre (One-to-Many: Genre can be the main genre for many Books)
 // This uses the `genre_id` foreign key in the `Books` table.
 Genre.hasMany(Book, {
-  foreignKey: 'genre_id',     // Changed from primary_genre_id
-  as: 'MainGenreBooks',       // Alias
-  onDelete: 'RESTRICT',       // Matches SQL FK constraint for Books.genre_id
+  foreignKey: 'genre_id',
+  sourceKey: 'genre_id',      // Explicitly state the source key on Genre model
+  as: 'MainGenreBooks',
+  onDelete: 'RESTRICT',
   onUpdate: 'CASCADE'
 });
 Book.belongsTo(Genre, {
-  foreignKey: 'genre_id',     // Changed from primary_genre_id
-  as: 'MainGenre',            // Alias to fetch the main genre of a book
-  // `allowNull: false` for this foreign key is defined in the Book model.
+  foreignKey: 'genre_id',     // This is the foreign key in the Book model
+  targetKey: 'genre_id',      // <<<< THIS IS THE FIX: Explicitly state the target key on Genre model
+  as: 'MainGenre',
 });
 
-// --- Book and Borrowing Associations (NEW/UPDATED) ---
-// One Book can have many Borrowings
+// If you intend to use the BookGenre join table for a many-to-many relationship:
+// Book.belongsToMany(Genre, {
+//   through: BookGenre,
+//   foreignKey: 'book_id',    // FK in BookGenre pointing to Book
+//   otherKey: 'genre_id',     // FK in BookGenre pointing to Genre
+//   as: 'AllGenres'           // Example alias for the collection of genres
+// });
+// Genre.belongsToMany(Book, {
+//   through: BookGenre,
+//   foreignKey: 'genre_id',   // FK in BookGenre pointing to Genre
+//   otherKey: 'book_id',      // FK in BookGenre pointing to Book
+//   as: 'BooksWithThisGenre' // Example alias
+// });
+
+
+// --- Book and Borrowing Associations ---
 Book.hasMany(Borrowing, {
   foreignKey: 'book_id',
-  onDelete: 'RESTRICT' // Matches your SQL FK constraint for Borrowings.book_id
+  onDelete: 'RESTRICT'
 });
-// One Borrowing belongs to one Book
 Borrowing.belongsTo(Book, {
   foreignKey: 'book_id'
 });
-// --- End Book and Borrowing Associations ---
 
-
-// Book and Reservation (One-to-Many) (Unchanged)
+// Book and Reservation (One-to-Many)
 Book.hasMany(Reservation, { foreignKey: 'book_id', onDelete: 'CASCADE' });
-Reservation.belongsTo(Book, { foreignKey: 'book_id' });
+Reservation.belongsTo(Book, {
+  foreignKey: 'book_id'
+});
 
 
 // --- Sync and Export ---
@@ -64,18 +80,18 @@ const db = {
   Book,
   Borrowing,
   Reservation,
+  // BookGenre, // Add if defined and used
 };
 
-// Optional: Function to sync all models
 db.syncModels = async (options = {}) => {
   try {
-    // Ensure sync order respects FKs
     await User.sync(options);
     await Author.sync(options);
-    await Genre.sync(options); // Genre before Book
-    await Book.sync(options);    // Book depends on Author, Genre
-    await Borrowing.sync(options); // Borrowing depends on User, Book
-    await Reservation.sync(options); // Reservation depends on User, Book
+    await Genre.sync(options);
+    await Book.sync(options);
+    // await BookGenre.sync(options); // Sync join table if used
+    await Borrowing.sync(options);
+    await Reservation.sync(options);
 
     console.log('All models were synchronized successfully.');
   } catch (error) {

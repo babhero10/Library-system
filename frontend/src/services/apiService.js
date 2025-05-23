@@ -82,7 +82,7 @@ export const signupUser = async (userData) => {
 // --- Book Related API Calls ---
 export const getAllBooks = async (page = 1, limit = 10) => {
   const response = await fetch(`${API_BASE_URL}/book?page=${page}&limit=${limit}`, {
-    // credentials: 'include', // If book list depends on user session
+    credentials: 'include', // If book list depends on user session
   });
   return handleResponse(response); // Expects { data: { books: [], ...pagination } }
 };

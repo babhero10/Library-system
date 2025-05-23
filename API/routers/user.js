@@ -51,13 +51,9 @@ router.get('/status', (req, res) => {
   if (req.session && req.session.user) {
     res.json({ loggedIn: true, user: req.session.user });
   } else {
-    // User is not logged in
-    res.json({ loggedIn: false }).status(401);
+    res.status(401).json({ loggedIn: false });
   }
 });
-
-router.post('/signup', userController.signup);
-
 
 
 export default router;

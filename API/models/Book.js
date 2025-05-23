@@ -24,8 +24,8 @@ Book.init({
     type: DataTypes.BIGINT.UNSIGNED,
     allowNull: false,
     references: {
-      model: Genre, 
-      key: 'genre_id'
+      model: Genre, // Or 'Genres' (table name)
+      key: 'genre_id' // This should be the PK of the Genre model
     }
   },
   title: {

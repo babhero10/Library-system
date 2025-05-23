@@ -1,62 +1,149 @@
 // src/pages/BookPage.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getBookById, API_BASE_URL } from '../services/apiService'; // Import getBookById and API_BASE_URL
 import '../styles/BookPage.css'; // Ensure this path is correct
-import bookCoverImage from '../assets/B1.jpg'; // Static import for the example book
+import Header from '../components/Header'; // Assuming you have a Header
 
-// Static book data for this example
-const bookData = {
-  id: '1',
-  title: 'On The Road',
-  author: 'Jack Kerouac',
-  authorSlug: 'jack-kerouac',
-  publishYear: '1957',
-  genre: ['Beat Generation', 'Novel', 'Classic'],
-  language: 'English',
-  description: `Sal Paradise, a young innocent, joins his hero Dean Moriarty, a reckless, con-man, Casanova, an charismatic fool, on a mission to go 'On the Road'. They travel back and forth across the United States. In their search for 'It', the pure essence of experience, they test the limits of the American dream. A classic of the Beat Generation, On the Road is a story of freedom, excitement, and the search for meaning.`,
-  coverImage: bookCoverImage, // Using the imported static image path
+// Helper function to construct full image URLs
+const constructFullImageUrl = (relativePathFromServer) => {
+  if (!relativePathFromServer) {
+    return `${process.env.PUBLIC_URL}/default-book-cover.png`; // Default cover
+  }
+  if (relativePathFromServer.startsWith('http://') || relativePathFromServer.startsWith('https://')) {
+    return relativePathFromServer;
+  }
+  const pathSegment = relativePathFromServer.startsWith('/') ? relativePathFromServer : `/${relativePathFromServer}`;
+  return `${API_BASE_URL}${pathSegment}`;
 };
+
+const LoadingIndicator = () => <div className="loading-message">Loading book details...</div>; // Added class for styling
+const ErrorMessage = ({ message }) => <div className="error-message api-error-message">{message}</div>; // Added class
 
 const BookPage = () => {
   const navigate = useNavigate();
-  // const { bookId } = useParams(); // Not used with current static data setup
+  const { bookId } = useParams(); // Get bookId from URL (e.g., from /book/123)
 
-  const currentBook = bookData; // Using static data for this example
+  const [currentBook, setCurrentBook] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!bookId) {
+      setError("No book ID provided in URL.");
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchBookDetails = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await getBookById(bookId);
+        if (result.success && result.data) {
+          // Process the fetched book data
+          const bookDataFromApi = result.data;
+          setCurrentBook({
+            id: bookDataFromApi.book_id,
+            title: bookDataFromApi.title,
+            // Assuming author_name_display and potentially an author_id or slug for linking
+            author: bookDataFromApi.author_name_display || "Unknown Author", 
+            // You might need an author_id from API to construct authorSlug for navigation
+            // authorSlug: bookDataFromApi.author_slug || String(bookDataFromApi.author_id || '').toLowerCase().replace(/\s+/g, '-'),
+            authorId: bookDataFromApi.author_id, // If your API provides author_id
+            publishYear: bookDataFromApi.publication_year,
+            // Use genre_name_display for the genre string
+            genre: bookDataFromApi.genre_name_display || "N/A", 
+            language: bookDataFromApi.language || "N/A",
+            description: bookDataFromApi.description,
+            coverImage: constructFullImageUrl(bookDataFromApi.cover_image_url),
+            // Store original relative path if needed for sending back to reservation page
+            originalCoverPath: bookDataFromApi.cover_image_url 
+          });
+        } else {
+          setError(result.error || `Book with ID ${bookId} not found.`);
+          setCurrentBook(null);
+        }
+      } catch (err) {
+        console.error(`BookPage: Failed to fetch book ${bookId}:`, err);
+        setError(err.message || "An error occurred while loading book details.");
+        setCurrentBook(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBookDetails();
+  }, [bookId]); // Re-fetch if bookId changes
 
   const handleAuthorClick = () => {
-    if (currentBook && currentBook.authorSlug) {
-      navigate(`/author/${currentBook.authorSlug}`);
+    if (currentBook && currentBook.authorId) { // Navigate using authorId
+      navigate(`/author/${currentBook.authorId}`);
+    } else if (currentBook && currentBook.author) {
+        console.warn("Author ID not available for navigation, attempting navigation with author name (slug would be better).")
+        // Fallback if only name is available, less reliable
+        // navigate(`/author/${currentBook.author.toLowerCase().replace(/\s+/g, '-')}`);
     }
   };
 
   const handleBorrowClick = () => {
     if (currentBook) {
-      // currentBook.coverImage here is the imported variable 'bookCoverImage',
-      // which Webpack/Vite resolves to a path string.
-      const coverImageUrl = currentBook.coverImage; 
-
+      // Pass the original relative cover path (if available) or the full URL
+      const coverParam = currentBook.originalCoverPath || currentBook.coverImage;
       navigate(
-        `/reserve?bookId=${currentBook.id}&title=${encodeURIComponent(currentBook.title)}&cover=${encodeURIComponent(coverImageUrl)}`
+        `/reserve?bookId=${currentBook.id}&title=${encodeURIComponent(currentBook.title)}&cover=${encodeURIComponent(coverParam)}`
       );
-      console.log(`Borrowing ${currentBook.title} (ID: ${currentBook.id}), Cover: ${coverImageUrl}`);
+      console.log(`Navigating to reserve ${currentBook.title} (ID: ${currentBook.id})`);
     }
   };
 
-  if (!currentBook) {
+  if (isLoading) {
     return (
       <div className="bp-page-container">
+        <Header /> {/* Assuming Header doesn't rely on book data */}
         <main className="bp-main-content-area">
           <div className="bp-content-card" style={{ textAlign: 'center', padding: '40px' }}>
-            <p>Book not found.</p>
-            <button onClick={() => navigate('/')} className="bp-action-button">Go Home</button>
+            <LoadingIndicator />
           </div>
         </main>
       </div>
     );
   }
 
+  if (error) {
+    return (
+      <div className="bp-page-container">
+        <Header />
+        <main className="bp-main-content-area">
+          <div className="bp-content-card" style={{ textAlign: 'center', padding: '40px' }}>
+            <ErrorMessage message={error} />
+            <button onClick={() => navigate('/')} className="bp-action-button" style={{ marginTop: '20px' }}>Go Home</button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+  
+  if (!currentBook) {
+    // This case should ideally be covered by the error state if fetching failed
+    return (
+      <div className="bp-page-container">
+        <Header />
+        <main className="bp-main-content-area">
+          <div className="bp-content-card" style={{ textAlign: 'center', padding: '40px' }}>
+            <p>Book details are not available.</p>
+            <button onClick={() => navigate('/')} className="bp-action-button" style={{ marginTop: '20px' }}>Go Home</button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // Render the book details
   return (
     <div className="bp-page-container">
+      {/* Header is rendered globally in App.js if you have that setup, otherwise include here */}
+      {/* <Header /> */} 
       
       <main className="bp-main-content-area">
         <div className="bp-content-card">
@@ -73,7 +160,12 @@ const BookPage = () => {
               
               <div className="bp-info-item">
                 <span className="bp-attribute">Author:</span>
-                <span className="bp-value bp-clickable" onClick={handleAuthorClick}>
+                <span 
+                    className={`bp-value ${currentBook.authorId ? 'bp-clickable' : ''}`} 
+                    onClick={currentBook.authorId ? handleAuthorClick : undefined}
+                    tabIndex={currentBook.authorId ? 0 : -1}
+                    onKeyDown={currentBook.authorId && ((e) => e.key === 'Enter' && handleAuthorClick())}
+                >
                   {currentBook.author}
                 </span>
               </div>
@@ -86,7 +178,8 @@ const BookPage = () => {
               <div className="bp-info-item">
                 <span className="bp-attribute">Genre:</span>
                 <span className="bp-value">
-                  {Array.isArray(currentBook.genre) ? currentBook.genre.join(', ') : currentBook.genre}
+                  {/* Assuming currentBook.genre is now a string from genre_name_display */}
+                  {currentBook.genre}
                 </span>
               </div>
 

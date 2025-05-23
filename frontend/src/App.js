@@ -46,7 +46,11 @@ const LayoutManager = () => {
         <Route path="/book/:bookId" element={<BookPage />} />
         <Route path="/author/:authorId" element={<AuthorPage />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminPage />
+          </ProtectedRoute>
+        } />
 
         {/* Protected Routes */}
         <Route
