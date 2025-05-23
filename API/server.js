@@ -36,7 +36,13 @@ async function startServer() {
 
 
     // CORS
-    const corsOptions = {};
+    const corsOptions = {
+      origin: function (origin, callback) {
+        // Reflect the request origin, if it's present
+        callback(null, origin || true); // Allow origin if present, or allow if no origin (e.g. curl)
+      },
+      credentials: true,
+    };
     app.use(cors(corsOptions));
 
     // BODY PARSING

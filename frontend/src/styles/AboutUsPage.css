@@ -19,7 +19,7 @@ body {
   display: flex; /* To center the content if it's narrower than viewport */
   justify-content: center;
   align-items: center; /* Vertically center if content is short */
-  padding-top: calc(0px + 40px); /* !!! HEADER_HEIGHT + desired space !!! */
+  padding-top: calc(20px + 40px); /* !!! HEADER_HEIGHT + desired space !!! */
   padding-bottom: 40px;
   padding-left: 20px;
   padding-right: 20px;
@@ -123,12 +123,12 @@ body {
 
 @media (max-width: 768px) {
   .au-content-wrapper {
-    padding-top: calc(100px + 30px); /* !!! Adjust HEADER_HEIGHT !!! */
+    padding-top: calc(10px + 30px); /* !!! Adjust HEADER_HEIGHT !!! */
   }
 }
 @media (max-width: 480px) {
   .au-content-wrapper {
-    padding-top: calc(100px + 20px); /* !!! Adjust HEADER_HEIGHT !!! */
+    padding-top: calc(10px + 20px); /* !!! Adjust HEADER_HEIGHT !!! */
     padding-left: 15px;
     padding-right: 15px;
   }

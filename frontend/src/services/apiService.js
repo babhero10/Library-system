@@ -4,7 +4,7 @@
 // Adjust '/api' if your backend is on a different port during development
 // and you haven't set up a proxy in package.json.
 // If proxied, '/api' will correctly hit your backend.
-const API_BASE_URL = 'http://localhost:8000/'; 
+const API_BASE_URL = 'http://localhost:8000'; 
 
 // Helper for handling API responses and errors
 const handleResponse = async (response) => {
