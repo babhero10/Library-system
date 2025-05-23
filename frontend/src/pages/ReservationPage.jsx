@@ -1,27 +1,35 @@
 import React, { useState } from 'react';
 import '../styles/ReservationPage.css';
 import calendarIcon from '../assets/calendar.png';
-import libraryImage from '../assets/library.jpg'; // or any reservation-related image
+import libraryImage from '../assets/library.jpg';
 
 const ReservationPage = () => {
   const [ReserveDate, setReserveDate] = useState('');
   const [ReserveDateError, setReserveDateError] = useState('');
 
-
   const handleReserve = () => {
- 
     // Reset error states
     setReserveDateError('');
- 
-    // Check if borrow date and return date are not empty
+
+    // Check if reserve date is empty
     if (!ReserveDate) {
-      if (!ReserveDate) setReserveDateError('Reserve date is required.');
+      setReserveDateError('Reserve date is required.');
       return;
     }
 
-      // If all checks pass, clear the error and proceed with reservation logic
-    console.log('Reserved:', {ReserveDate});
-    // Handle reservation logic here
+    // Validate reserve date is today or in the future
+    const selectedDate = new Date(ReserveDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Clear time part
+
+    if (selectedDate < today) {
+      setReserveDateError('Reserve date cannot be in the past.');
+      return;
+    }
+
+    // If all checks pass
+    console.log('Reserved:', { ReserveDate });
+    // Proceed with reservation logic here (e.g., send to backend)
   };
 
   return (
@@ -33,7 +41,6 @@ const ReservationPage = () => {
       <div className="reservation-form">
         <h1 className="reservation-title">Library System</h1>
 
-        {/* Borrow Date */}
         <label className="label-text borrow-label">Reserve Date:</label>
         <div className="input-box">
           <img src={calendarIcon} alt="Calendar" className="calendar-icon" />
@@ -42,12 +49,11 @@ const ReservationPage = () => {
             value={ReserveDate}
             onChange={(e) => setReserveDate(e.target.value)}
             className="date-input"
-            placeholder="Choose your borrow date"
+            placeholder="Choose your reserve date"
           />
         </div>
         {ReserveDateError && <div className="error-message">{ReserveDateError}</div>}
 
-        {/* Return Date */}        
         <button className="reserve-button" onClick={handleReserve}>Reserve</button>
       </div>
     </div>
