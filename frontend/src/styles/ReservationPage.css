@@ -36,7 +36,8 @@
   font-family: 'Kavoon', cursive;
   font-size: 32px;
   color: #000000;
-  margin-bottom: 40px;
+  margin-top: -40px;
+  margin-bottom: 70px;
 }
 
 /* Label Styles */
@@ -47,6 +48,7 @@
   align-self: flex-start;
   margin-left: 20%;
   margin-bottom: 8px;
+  margin-top: 10;
 }
 
 .input-box {

@@ -1,4 +1,3 @@
-// src/App.js
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
@@ -8,6 +7,7 @@ import ContactUsPage from './pages/ContactUsPage';
 import BookPage from './pages/BookPage';
 import AuthorPage from './pages/AuthorPage';
 import ReservationPage from './pages/ReservationPage';
+import SearchPage from './pages/SearchPage'; // ✅ Import the new SearchPage
 
 function App() {
   return (
@@ -21,9 +21,10 @@ function App() {
         <Route path="/book/:id" element={<BookPage />} />
         <Route path="/author/:id" element={<AuthorPage />} />
         <Route path="/reserve" element={<ReservationPage />} />
+        <Route path="/search" element={<SearchPage />} /> {/* ✅ New route for search */}
       </Routes>
     </Router>
   );
 }
 
-export default App;
+export default App;

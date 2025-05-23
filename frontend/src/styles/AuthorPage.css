@@ -79,7 +79,7 @@ body {
   height: 282px;
   left: 46px;
   top: 108px;
-  background: url('../assets/Aboutus.jpg') no-repeat center center;
+  background: url('../assets/author.jpg') no-repeat center center;
   background-size: cover;
   border-radius: 8px;
   z-index: 2;
@@ -149,7 +149,7 @@ body {
   position: absolute;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url('../assets/library.jpg');
+ 
 }
 
 .cover1 {
@@ -157,6 +157,7 @@ body {
   height: 158px;
   top: 470px;
   left: 379px;
+   background-image: url('../assets/B1.jpg');
 }
 
 .cover2 {
@@ -164,6 +165,7 @@ body {
   height: 156px;
   top: 470px;
   left: 614px;
+  background-image: url('../assets/B2.jpg');
 }
 
 .cover3 {
@@ -171,4 +173,5 @@ body {
   height: 161px;
   top: 470px;
   left: 811px;
+  background-image: url('../assets/B3.jpg');
 }
