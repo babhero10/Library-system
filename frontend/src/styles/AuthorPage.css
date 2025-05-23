@@ -1,177 +1,101 @@
-/* Page-wide container and background */
+/* src/styles/AuthorPage.css */
+
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Lora', serif;
-  background-color: #D0B39D;
+  font-family: 'Karla', 'Lora', sans-serif;
+  background-color: #D0B39D; 
+  color: #333;
+  /* overflow-y: scroll; /* OPTION 1: Force scrollbar always on body (classic) */
 }
 
 .author-page-container {
-  width: 100vw;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh; /* Ensure it takes at least full viewport height */
+  /* NO overflow: hidden here, let content determine if scroll is needed */
 }
 
-/* Top Navigation always on top */
-.top-bar {
+.ap-content-wrapper {
+  flex-grow: 1; 
+  box-sizing: border-box;
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  
+  /* !!! REPLACE 100px with your actual measured header height !!! */
+  padding-top: calc(0px + 30px); 
+  padding-right: 20px;
+  padding-bottom: 30px; /* Ensure there's bottom padding */
+  padding-left: 20px;
+  
+  /* OPTION 2: Make this specific content area scrollable if it overflows
+     This is often preferred if you have other fixed elements like a footer later.
+     However, for a simple page with just a fixed header, letting the body scroll is fine.
+  */
+  /* overflow-y: auto; */
+  /* max-height: calc(100vh - YOUR_HEADER_HEIGHT_HERE); /* Only if using overflow-y: auto on this element */
+}
+
+.ap-main-content {
   width: 100%;
-  height: 65px;
-  background: #9E7A6C;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
-
-.library-title {
-  font-family: 'Kavoon', cursive;
-  font-size: 32px;
-  color: #000;
-}
-
-.greeting {
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-}
-
-/* Search Bar */
-.search-bar {
-  width: 447px;
-  height: 48px;
-  background: #fff;
-  border: 1px solid #000;
+  max-width: 1100px;
+  background-color: #F7F1EA; 
   border-radius: 12px;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  box-sizing: border-box;
+  padding: 30px 40px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  --book-list-fade-bg: #F7F1EA; /* For BookList fade if using CSS variables */
+  margin-bottom: auto; /* Pushes this content up if .ap-content-wrapper is taller */
 }
 
-.search-bar input {
-  flex: 1;
-  border: none;
-  font-family: 'Karla', sans-serif;
-  font-size: 18px;
-  outline: none;
+/* ... (rest of your .ap-author-presentation, .ap-authors-works-section, etc. styles) ... */
+/* Ensure no fixed heights on .ap-main-content or .ap-authors-works-section that would prevent them from growing */
+
+.ap-author-presentation {
+  display: flex; gap: 40px; align-items: flex-start;
+  margin-bottom: 40px; padding-bottom: 30px;
+  border-bottom: 1px solid #E0CDBE; 
+}
+.ap-author-image-container { flex-shrink: 0; }
+.ap-author-image { width: 260px; height: 260px; object-fit: cover; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); border: 4px solid #fff; }
+.ap-author-info-card { flex-grow: 1; }
+.ap-page-title, .ap-about-title { font-family: 'Lora', serif; font-weight: 700; font-size: 28px; color: #5C3A21; margin-top: 0; margin-bottom: 25px; }
+.ap-info-item { margin-bottom: 20px; display: flex; font-size: 17px; line-height: 1.6; }
+.ap-label { font-weight: 600; color: #795548; min-width: 90px; margin-right: 10px; flex-shrink: 0; }
+.ap-value { color: #4E4E4E; }
+.ap-bio-text { text-align: justify; }
+
+.ap-authors-works-section { margin-top: 0; }
+.ap-authors-works-section .book-list-container { margin-bottom: 40px; }
+.ap-authors-works-section .book-list-container:last-child { margin-bottom: 0; }
+.ap-authors-works-section .book-list-title {
+  font-size: 22px; color: #6D4C41;
+  padding-left: 0; margin-bottom: 20px; font-weight: 600;
 }
 
-.search-bar img {
-  width: 32px;
-  height: 32px;
+/* --- Responsive Adjustments --- */
+/* ... (Keep your responsive adjustments, ensuring padding-top is correct for header height) ... */
+@media (max-width: 992px) {
+  .ap-content-wrapper { padding-right: 15px; padding-left: 15px; }
+  .ap-main-content { padding: 25px 30px; }
+  .ap-author-presentation { gap: 30px; }
+  .ap-author-image { width: 220px; height: 220px; }
 }
-
-/* Inner author page content */
-.author-page {
-  position: relative;
-  width: 992px;
-  height: 600px;
-  margin: 20px auto;
-  background: #D0B39D;
+@media (max-width: 768px) {
+  .ap-content-wrapper { padding-top: calc(100px + 20px); padding-right: 10px; padding-left: 10px; } /* !!! ADJUST HEADER HEIGHT !!! */
+  .ap-main-content { padding: 20px; }
+  .ap-author-presentation { flex-direction: column; align-items: center; gap: 25px; padding-bottom: 25px; margin-bottom: 25px; }
+  .ap-author-image { width: 200px; height: 200px; }
+  .ap-page-title, .ap-about-title { font-size: 24px; text-align: center; }
+  .ap-info-item { font-size: 16px; flex-direction: column; align-items: flex-start; }
+  .ap-label { margin-bottom: 5px; }
+  .ap-authors-works-section .book-list-container { margin-bottom: 30px; }
+  .ap-authors-works-section .book-list-title { font-size: 20px; }
 }
-
-/* Author Image */
-.author-image {
-  position: absolute;
-  width: 282px;
-  height: 282px;
-  left: 46px;
-  top: 108px;
-  background: url('../assets/author.jpg') no-repeat center center;
-  background-size: cover;
-  border-radius: 8px;
-  z-index: 2;
-}
-
-/* Author Info Box */
-.author-content {
-  position: absolute;
-  width: 931px;
-  height: 319px;
-  left: 31px;
-  top: 97px;
-  background: #E9DED4;
-  border-radius: 8px;
-  z-index: 1;
-  padding: 20px 40px;
-  box-sizing: border-box;
-}
-
-.about-title {
-  font-weight: 600;
-  font-size: 25px;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  text-align: center;
-  margin-bottom: 50px;
-  margin-left: 200px;
-}
-
-.author-info {
-  margin-left: 300px;
- 
-
-}
-
-.info-row {
-  margin-bottom: 50px;
-  display: flex;
-  align-items: flex-start;
-}
-
-.label {
-  font-weight: 650;
-  font-size: 20px;
-  min-width: 150px;
-  margin-right: 10px;
-}
-
-.value {
-  font-weight: 400;
-  font-size: 20px;
-}
-
-.bio-text {
-  line-height: 1.5;
-}
-
-/* Other Books Section */
-.other-books-title {
-  position: absolute;
-  top: 520px;
-  left: 31px;
-  font-size: 25px;
-  font-weight: 600;
-}
-
-.book-cover {
-  position: absolute;
-  background-size: cover;
-  background-repeat: no-repeat;
- 
-}
-
-.cover1 {
-  width: 144px;
-  height: 158px;
-  top: 470px;
-  left: 379px;
-   background-image: url('../assets/B1.jpg');
-}
-
-.cover2 {
-  width: 111px;
-  height: 156px;
-  top: 470px;
-  left: 614px;
-  background-image: url('../assets/B2.jpg');
-}
-
-.cover3 {
-  width: 97px;
-  height: 161px;
-  top: 470px;
-  left: 811px;
-  background-image: url('../assets/B3.jpg');
+@media (max-width: 480px) {
+   .ap-content-wrapper { padding-top: calc(100px + 15px); } /* !!! ADJUST HEADER HEIGHT !!! */
+  .ap-main-content { padding: 15px; }
+  .ap-author-image { width: 180px; height: 180px; }
+  .ap-page-title, .ap-about-title { font-size: 22px; }
+  .ap-authors-works-section .book-list-title { font-size: 18px; margin-bottom: 15px; }
 }

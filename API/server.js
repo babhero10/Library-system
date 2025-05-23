@@ -36,10 +36,7 @@ async function startServer() {
 
 
     // CORS
-    const corsOptions = {
-      origin: process.env.CORS_ORIGIN || 'http://localhost:3000', // Frontend URL
-      credentials: true,
-    };
+    const corsOptions = {};
     app.use(cors(corsOptions));
 
     // BODY PARSING

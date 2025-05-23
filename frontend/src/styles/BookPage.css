@@ -1,128 +1,242 @@
-/* Book Page Container */
-.book-page-container {
-  width: 100vw;
-  height: 100vh;
+/* src/styles/BookPage.css */
+
+/* --- Global Page Styles --- */
+/* body styles should ideally be global, but if specific to this page's background: */
+/*
+body {
+  margin: 0;
+  font-family: 'Karla', 'Lora', sans-serif;
+  background-color: #D0B39D; 
+  color: #333;
+}
+*/
+
+/* Outermost container for the ENTIRE BookPage view */
+.bp-page-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #D0B39D;
+  flex-direction: column; /* Header on top, main content below */
+  min-height: 100vh; /* Ensure page takes at least full viewport height */
+  background-color: #D0B39D; /* Moved background here from .bp-container */
 }
 
-/* Book Page */
-.book-page {
-  position: relative;
-  width: 992px;
-  height: 600px;
-  background: #D0B39D;
-}
-
-/* Book Cover */
-.book-cover {
-  position: absolute;
-  width: 228px;
-  height: 249px;
-  left: 17px;
-  top: 51px;
-  background: url(../assets/B1.jpg) no-repeat center center;
-  background-size: cover;
-}
-
-/* Book Details */
-.book-details {
-  position: absolute;
-  width: 559px;
-  height: 468px;
-  left: 327px;
-  top: 52px;
-  background: #E9DED4;
-  padding: 10px;
+/* Main content area BELOW the Header, this is what will scroll if content is long */
+.bp-main-content-area {
+  flex-grow: 1; /* Allows this area to expand and fill remaining vertical space */
+  padding: 30px 20px; /* Padding around the content card within this scrollable area */
   box-sizing: border-box;
+  display: flex; /* To help center the .bp-content-card */
+  flex-direction: column; /* To stack elements if needed, and for align-items */
+  align-items: center; /* Centers the .bp-content-card horizontally */
+  /* overflow-y: auto; */ /* Browser will add scroll if content exceeds viewport height naturally */
+                          /* Only add this if you need explicit scroll on this specific element */
 }
 
-.details-title {
+/* --- Content Card --- */
+.bp-content-card {
+  background-color: #F7F1EA;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  padding: 30px 40px;
+  width: 100%;
+  max-width: 950px;
+  box-sizing: border-box;
+  /* margin-top: 0; /* Removed specific margin-top as padding on .bp-main-content-area handles spacing */
+}
+
+/* --- Main Layout (Cover + Details) --- */
+.bp-main-layout {
+  display: flex;
+  gap: 40px;
+}
+
+/* --- Book Cover Section --- */
+.bp-cover-section {
+  flex-basis: 30%;
+  max-width: 280px;
+  flex-shrink: 0;
+}
+
+.bp-cover-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  border: 3px solid #fff;
+}
+
+/* --- Book Details Section --- */
+.bp-details-section {
+  flex-basis: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bp-title {
   font-family: 'Lora', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #5C3A21;
+  margin-top: 0;
+  margin-bottom: 25px;
+  line-height: 1.3;
+}
+
+.bp-info-item {
+  font-family: 'Karla', sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: baseline;
+}
+
+.bp-attribute {
   font-weight: 600;
-  font-size: 28px;
-  color: #000000;
-  text-align: center;
-  margin-bottom: 20px;
+  color: #795548;
+  min-width: 140px;
+  margin-right: 10px;
 }
 
-/* Book Info */
-.book-info {
-  font-family: 'Lora', serif;
-  font-size: 20px;
-  line-height: 32px;
-  color: #000000;
-  margin-bottom: 12px;
-  display: flex;             
-  align-items: flex-start;   
-}
-
-.attribute {
-  font-weight: 600;
-  min-width: 180px;           
-  display: inline-block;
-}
-
-.value {
+.bp-value {
   font-weight: 400;
-  flex: 1;                    
-  display: inline-block;
-  margin-left: 0;            
+  color: #4E4E4E;
 }
 
-.clickable {
+.bp-clickable {
   cursor: pointer;
+  color: #596288;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.bp-clickable:hover {
+  color: #3e476d;
   text-decoration: underline;
 }
 
-.clickable:hover {
-  color: #596288;
+/* --- Description --- */
+.bp-description-item {
+  margin-top: 10px;
+  margin-bottom: 25px;
 }
 
-/* Description */
-.book-description {
-  margin-bottom: 20px;
-  max-height: 164px;
- 
+.bp-description-label {
+  font-family: 'Lora', serif;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #5C3A21;
 }
 
-.book-description .attribute {
-  font-weight: 600;
-  font-size: 20px;
-  margin-bottom: 1px;
-  
-}
-
-.description-text {
-  font-weight: 400;
+.bp-description-text {
+  font-family: 'Karla', sans-serif;
   font-size: 16px;
-  line-height: 20px;
-  margin-top: 5px;
-  cursor: default; 
+  line-height: 1.7;
+  color: #4E4E4E;
+  text-align: justify;
 }
 
-/* Borrow Button */
-.borrow-button {
+/* --- Actions (e.g., Borrow Button) --- */
+.bp-actions {
+  margin-top: auto;
+  padding-top: 20px;
   display: flex;
   justify-content: center;
-  margin-top: 50px;
 }
 
-.borrow-button button {
-  width: 159px;
-  height: 46px;
-  background: #596288;
-  border-radius: 28px;
+.bp-borrow-button {
+  background-color: #8b6e5c;
+  color: #fff;
   font-family: 'Karla', sans-serif;
   font-weight: 700;
-  font-size: 20px;
-  color: #000000;
+  font-size: 18px;
+  padding: 12px 30px;
   border: none;
+  border-radius: 25px;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-.borrow-button button:hover {
-  background: #4a5570;
+.bp-borrow-button:hover {
+  background-color: #7a5f4f;
+  transform: translateY(-2px);
+}
+
+.bp-borrow-button:active {
+  transform: translateY(0);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .bp-main-content-area { /* Adjust padding for smaller screens */
+    padding: 20px 15px;
+  }
+  .bp-content-card {
+    padding: 25px;
+  }
+  .bp-main-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+  .bp-cover-section {
+    flex-basis: auto;
+    width: 70%;
+    max-width: 250px;
+  }
+  .bp-details-section {
+    flex-basis: auto;
+    width: 100%;
+  }
+  .bp-title {
+    font-size: 28px;
+    text-align: center;
+  }
+  .bp-info-item {
+    font-size: 16px;
+  }
+  .bp-attribute {
+    min-width: 120px;
+  }
+  .bp-description-text {
+    font-size: 15px;
+  }
+  .bp-actions {
+    justify-content: center;
+  }
+  .bp-borrow-button {
+    font-size: 17px;
+    padding: 10px 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bp-main-content-area { /* Further adjust padding */
+    padding: 15px 10px;
+  }
+  .bp-content-card {
+    padding: 20px;
+  }
+  .bp-title {
+    font-size: 24px;
+  }
+  .bp-cover-section {
+    width: 80%;
+    max-width: 220px;
+  }
+  .bp-info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .bp-attribute {
+    min-width: auto;
+    margin-bottom: 4px;
+  }
+  .bp-borrow-button {
+    width: 100%;
+    font-size: 16px;
+  }
 }

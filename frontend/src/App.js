@@ -7,7 +7,7 @@ import ContactUsPage from './pages/ContactUsPage';
 import BookPage from './pages/BookPage';
 import AuthorPage from './pages/AuthorPage';
 import ReservationPage from './pages/ReservationPage';
-import SearchPage from './pages/SearchPage'; // ✅ Import the new SearchPage
+import SearchPage from './pages/SearchPage';
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
         <Route path="/book/:id" element={<BookPage />} />
         <Route path="/author/:id" element={<AuthorPage />} />
         <Route path="/reserve" element={<ReservationPage />} />
-        <Route path="/search" element={<SearchPage />} /> {/* ✅ New route for search */}
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </Router>
   );

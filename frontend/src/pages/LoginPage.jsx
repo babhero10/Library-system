@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/LoginPage.css';
 import mailIcon from '../assets/envelope.png';
 import lockIcon from '../assets/Password.png';
-import libraryImage from '../assets/library.jpg';
+import libraryImage from '../assets/image.png';
+import '../styles/AuthForm.css';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');

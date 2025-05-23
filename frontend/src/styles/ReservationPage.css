@@ -1,117 +1,314 @@
-.reservation-container {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  background: #D0B39D;
-  font-family: 'Lora', serif;
-  overflow: hidden;
+/* src/styles/ReservationPage.css */
+
+/* --- Global Page Setup (Ideally in a global CSS file) --- */
+
+body {
+  margin: 0;
+  height: 100%;
+  font-family: 'Karla', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f4f4; /* Overall page background */
 }
 
-/* 50% Image section */
-.reservation-image {
-  flex: 1;
+/* --- Main Reservation Page Container --- */
+.reservation-container {
+  display: flex;
+  width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.reservation-image img {
+/* --- Image Half (for the general library background image) --- */
+.reservation-image-half {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  min-width: 0;
+}
+
+.library-image-display { /* Class for the background image on the left half */
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
-/* 50% Form section */
-.reservation-form {
+/* --- Form Half --- */
+.reservation-form-half {
   flex: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: center;   /* center vertically */
-  align-items: center;       /* center horizontally */
-  background: #D0B39D;
-  position: relative;
-  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  background: #D0B39D;    /* Beige background for this half */
+  padding: 40px 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+/* --- Form Content Wrapper (The "Card") --- */
+.reservation-form-content {
+  width: 100%;
+  max-width: 450px; /* Slightly wider to accommodate book preview nicely */
+  background: #ffffff;
+  padding: 30px 35px; /* Adjusted padding */
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-align: left;
 }
 
 .reservation-title {
   font-family: 'Kavoon', cursive;
-  font-size: 32px;
-  color: #000000;
-  margin-top: -40px;
-  margin-bottom: 70px;
+  font-size: 28px; /* Adjusted size */
+  color: #4A3B31;
+  margin-top: 0;
+  margin-bottom: 25px; /* Space below title */
+  text-align: center;
+  font-weight: normal;
 }
 
-/* Label Styles */
+/* --- Book Details Preview --- */
+.book-details-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.book-cover-preview {
+  width: 100px; /* Adjusted size for a more compact preview */
+  height: auto;
+  max-height: 150px;
+  object-fit: contain;
+  border-radius: 4px;
+  margin-bottom: 12px; /* Reduced space */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+}
+
+.book-title-preview {
+  font-family: 'Karla', sans-serif;
+  font-size: 17px; /* Adjusted size */
+  font-weight: 600;
+  color: #343a40;
+  text-align: center;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* --- Input Group & Labels --- */
+.input-group {
+  margin-bottom: 20px;
+}
+
 .label-text {
   font-weight: 600;
-  font-size: 25px;
-  color: #000000;
-  align-self: flex-start;
-  margin-left: 20%;
+  font-size: 15px;
+  color: #555;
   margin-bottom: 8px;
-  margin-top: 10;
+  display: block;
 }
 
+/* --- Input Box (Container for icon and input, if using custom icon) --- */
+/* This .input-box is structured for a potential left icon.
+   If not using a left icon, the .date-input will style itself directly. */
 .input-box {
   position: relative;
-  width: 80%;
-  max-width: 392px;
-  height: 68px;
-  background: #F4F0F1;
-  border-radius: 28px;
-  margin-bottom: 15px; /* Reduced margin for better spacing with the error message */
   display: flex;
   align-items: center;
+  width: 100%;
+  height: 50px;
+  background: #F9F9F9;
+  border-radius: 8px;
+  border: 1px solid #DDE2E5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
-.calendar-icon {
-  position: absolute;
-  left: 22px;
-  width: 29px;
-  height: 29px;
+.input-box:focus-within {
+  border-color: #8b6e5c;
+  box-shadow: 0 0 0 2px rgba(139, 110, 92, 0.2);
 }
+
+/* Input icon (e.g., calendar icon if you decide to add one on the left) */
+/*
+.input-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  opacity: 0.6;
+  z-index: 1;
+}
+*/
 
 .date-input {
   width: 100%;
-  height: 100%;
-  padding-left: 70px;
-  padding-right: 20px;
-  border: none;
-  background: transparent;
+  height: 100%; /* Fills .input-box if present, or its own height */
+  /* If NO custom left icon (default): */
+  padding-left: 15px;
+  padding-right: 15px;
+  /* If using a custom left icon, uncomment .input-icon and use:
+  padding-left: 50px;
+  text-indent: 2px;
+  */
+  border: none; /* Border is on .input-box if used, or applied directly below if not */
+  background: transparent; /* Background is on .input-box if used */
   font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  color: #000;
+  font-weight: 500;
+  font-size: 15px;
+  color: #333;
+  outline: none;
+  box-sizing: border-box;
+}
+/* If .date-input is NOT inside .input-box, it needs its own background/border */
+.input-group > .date-input { /* Direct child of input-group (no .input-box wrapper) */
+  height: 50px;
+  background: #F9F9F9;
+  border-radius: 8px;
+  border: 1px solid #DDE2E5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.input-group > .date-input:focus {
+  border-color: #8b6e5c;
+  box-shadow: 0 0 0 2px rgba(139, 110, 92, 0.2);
   outline: none;
 }
 
-/* Button */
+
+/* Styling the browser's date field placeholder text (WebKit) */
+.date-input::-webkit-datetime-edit-text,
+.date-input::-webkit-datetime-edit-month-field,
+.date-input::-webkit-datetime-edit-day-field,
+.date-input::-webkit-datetime-edit-year-field {
+  color: #aaa;
+}
+.date-input:valid::-webkit-datetime-edit-text,
+.date-input:valid::-webkit-datetime-edit-month-field,
+.date-input:valid::-webkit-datetime-edit-day-field,
+.date-input:valid::-webkit-datetime-edit-year-field {
+  color: #333;
+}
+.date-input:invalid {
+  color: #aaa;
+}
+
+
+/* --- Reserve Button --- */
 .reserve-button {
-  width: 159px;
-  height: 46px;
+  width: 100%;
+  max-width: 220px; /* Slightly wider button */
+  height: 48px;
   background: #596288;
-  border-radius: 28px;
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  color: #000000;
+  border-radius: 8px;
   border: none;
+  font-family: 'Karla', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
   cursor: pointer;
-  margin-top: 20px;
+  display: block;
+  margin: 30px auto 0;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .reserve-button:hover {
   background: #4a5570;
+  transform: translateY(-1px);
+}
+.reserve-button:active {
+  transform: translateY(0);
 }
 
-/* Error Message */
+/* --- Error Message --- */
 .error-message {
-  color:  #820002;;
-  font-size: 14px; /* Smaller font size for better alignment */
-  font-weight: 600;
-  margin-top: 2px; /* Space between input and error message */
-  text-align: left; /* Align error text to the left */
-  width: 80%;
-  max-width: 392px;
-  background: transparent;
-  margin-bottom: 15px; /* Space between error and next input field */
+  color: #D83A56;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 6px;
+  padding-left: 5px;
+  min-height: 18px;
+}
+.centered-error { /* For the "No book selected" message */
+  text-align: center;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #721c24; /* Darker red for more prominent error */
+  background-color: #f8d7da; /* Light pink background */
+  border: 1px solid #f5c6cb; /* Reddish border */
+  padding: 10px;
+  border-radius: 6px;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  html { overflow-y: auto; }
+  body { overflow-y: auto; }
+
+  .reservation-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .reservation-image-half {
+    flex: none;
+    height: 200px; /* Adjusted mobile image height */
+    width: 100%;
+  }
+
+  .reservation-form-half {
+    flex: 1;
+    align-items: stretch;
+    padding: 25px 15px; /* Adjusted padding */
+  }
+
+  .reservation-form-content {
+    width: 100%;
+    max-width: none;
+    padding: 25px 20px; /* Adjusted padding */
+  }
+
+  .reservation-title {
+    font-size: 24px; /* Adjusted size */
+    margin-bottom: 20px;
+  }
+
+  .book-cover-preview {
+    width: 80px; /* Smaller preview on mobile */
+    max-height: 120px;
+    margin-bottom: 10px;
+  }
+  .book-title-preview {
+    font-size: 15px; /* Adjusted size */
+  }
+
+  .label-text { font-size: 14px; }
+  .input-box, .input-group > .date-input { height: 46px; } /* Adjust if using direct date input */
+  .date-input { font-size: 14px; }
+
+
+  .reserve-button {
+    max-width: 100%;
+    margin-top: 25px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reservation-image-half { height: 160px; } /* Further reduced for very small screens */
+  .reservation-form-content { padding: 20px 15px; }
+  .reservation-title { font-size: 22px; }
+  .book-cover-preview { width: 70px; }
+  .book-title-preview { font-size: 14px; }
 }

@@ -4,67 +4,19 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Navbar styles */
-.navbar {
+/* Styles for the main page container (if not globally defined) */
+.page-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #8b6e5c;
-  padding: 15px 30px;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #d2b49c; /* Or your global page background */
 }
 
-.navbar h1 {
-  font-family: 'Comic Sans MS', cursive;
-  font-size: 28px;
-  margin: 0;
-}
-
-.navbar .nav-links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.navbar a {
-  text-decoration: none;
-  color: black;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-/* Search container */
-.homepage-search-container {
-  display: flex;
-  justify-content: center;
-  margin: 30px 0 10px;
-}
-
-/* Input + icon wrapper */
-.search-input-wrapper {
-  position: relative;
-  width: 300px;
-}
-
-/* Search input */
-.homepage-search-input {
-  width: 100%;
-  padding: 10px 40px 10px 12px; /* right padding for icon */
-  font-size: 16px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-  box-sizing: border-box;
-}
-
-/* Icon inside input */
-.search-icon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
+/* Styles for the main content area of the homepage */
+.homepage-content {
+  flex-grow: 1; /* Allows content to fill space if page isn't full */
+  padding: 20px; /* Add some padding around the book lists */
+  /* Add other specific styling for the homepage content area if needed */
 }
 
 /* Section headings */

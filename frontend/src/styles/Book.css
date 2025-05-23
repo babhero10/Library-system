@@ -1,0 +1,41 @@
+/* src/styles/Book.css */
+.book-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  margin: 10px; /* Provides spacing if .book-section uses flex-start or similar */
+  width: 150px; /* Adjust as needed, or make it responsive */
+  transition: transform 0.2s ease-in-out;
+}
+
+.book-item:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+}
+
+.book-item-image {
+  width: 100%; /* Image takes full width of .book-item */
+  height: 220px; /* Fixed height, adjust as needed */
+  object-fit: cover; /* Ensures image covers the area, might crop */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 8px; /* Space between image and title */
+}
+
+.book-item-title {
+  font-size: 0.85em; /* Small font */
+  color: #555;    /* Gray color */
+  margin-top: 4px;
+  line-height: 1.2;
+  /* Handle long titles that might break layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%; /* Ensures ellipsis works correctly */
+}
+
+/* Style for flipped book images */
+.book-item.flipped .book-item-image {
+  transform: scaleX(-1);
+}

@@ -1,65 +1,144 @@
-.about-page-container {
+/* src/styles/AboutUsPage.css */
+
+/* Body style ideally global, but if specific for this page's root background */
+body {
+  margin: 0;
+  font-family: 'Karla', sans-serif; /* Consistent sans-serif for body text */
+  background-color: #D0B39D; /* Overall page background */
+  color: #333;
+}
+
+.au-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.au-content-wrapper {
+  flex-grow: 1;
+  display: flex; /* To center the content if it's narrower than viewport */
+  justify-content: center;
+  align-items: center; /* Vertically center if content is short */
+  padding-top: calc(0px + 40px); /* !!! HEADER_HEIGHT + desired space !!! */
+  padding-bottom: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+.au-split-layout {
   display: flex;
   width: 100%;
-  height: 100vh;
-  background: #D0B39D;
-  overflow: hidden;
+  max-width: 1200px; /* Max width for the content */
+  background-color: #F7F1EA; /* Light beige card background */
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* To ensure border-radius clips image */
 }
 
-/* Left 50%: Image */
-.about-image-section {
-  flex: 1;
+.au-image-section {
+  flex: 1; /* Or a specific ratio like flex: 0.9; */
+  min-height: 400px; /* Ensure some height on smaller viewports before text wraps too much */
 }
 
-.about-image {
+.au-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block; /* Remove potential space below image */
 }
 
-/* Right 50%: Content */
-.about-content-section {
-  flex: 1;
-  padding: 60px;
+.au-text-section {
+  flex: 1.1; /* Give text slightly more space */
+  padding: 50px 60px; /* More padding */
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center horizontally */
-  justify-content: center; /* Center vertically */
-  background-color: #D0B39D;
-  text-align: center; /* Center text */
+  justify-content: center; /* Vertically center text content */
+  align-items: flex-start; /* Align text to the left */
+  text-align: left; /* Ensure text is left-aligned */
+  box-sizing: border-box;
 }
 
-.about-title {
-  font-family: 'Leckerli One', cursive;
-  font-size: 32px;
-  color: #000;
-  margin-bottom: 20px;
-  margin-right: 180px;
+.au-title {
+  font-family: 'Kavoon', 'Leckerli One', cursive; /* Kavoon for consistency or Leckerli if preferred */
+  font-size: 34px;
+  color: #4A3B31; /* Darker brown for better contrast */
+  margin-top: 0;
+  margin-bottom: 25px;
 }
 
-.about-description {
-  font-family: 'Kelly Slab', cursive;
-  font-size: 20px;
-  line-height: 1.4;
-  color: #000;
-  margin-bottom: 40px;
-  max-width: 80%; /* Limit width for better readability */
+.au-description {
+  font-family: 'Karla', 'Kelly Slab', cursive; /* Karla for readability, Kelly Slab if a specific look is desired */
+  font-size: 17px; /* Readable size */
+  line-height: 1.7; /* Improved line spacing */
+  color: #4E4E4E; /* Dark gray for text */
+  margin-bottom: 35px;
+  max-width: 100%; /* Let padding control width */
 }
 
-.contact-button {
-  width: 196px;
-  height: 48px;
+.au-contact-button {
+  /* Consistent button style with Login/Signup */
   background: #596288;
-  border-radius: 28px;
-  border: none;
+  color: #fff; /* White text */
   font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  color: #000;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px; /* Consistent radius */
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  align-self: center; /* Align button to the start if text is left-aligned */
 }
 
-.contact-button:hover {
+.au-contact-button:hover {
   background: #4a5570;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments for About Us Page */
+@media (max-width: 900px) { /* Breakpoint when side-by-side becomes too cramped */
+  .au-split-layout {
+    flex-direction: column;
+  }
+  .au-image-section {
+    max-height: 350px; /* Limit image height when stacked */
+    min-height: 250px;
+  }
+  .au-text-section {
+    padding: 40px;
+    align-items: center; /* Center text when stacked */
+    text-align: center;
+  }
+  .au-contact-button {
+    align-self: center; /* Center button when stacked */
+  }
+  .au-title {
+    font-size: 30px;
+  }
+  .au-description {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .au-content-wrapper {
+    padding-top: calc(100px + 30px); /* !!! Adjust HEADER_HEIGHT !!! */
+  }
+}
+@media (max-width: 480px) {
+  .au-content-wrapper {
+    padding-top: calc(100px + 20px); /* !!! Adjust HEADER_HEIGHT !!! */
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .au-text-section {
+    padding: 30px 25px;
+  }
+  .au-title {
+    font-size: 26px;
+  }
+  .au-description {
+    font-size: 15px;
+  }
 }
