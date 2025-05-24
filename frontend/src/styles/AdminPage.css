@@ -11,12 +11,12 @@ body {
 .books-view,
 .reservations-view,
 .borrow-view {
-  padding: 25px; /* Increased padding */
-  background: #E9DED4; /* Your section background */
-  border-radius: 10px; /* Slightly more rounded */
-  margin: 25px auto; /* Consistent margin and centering */
-  max-width: 1150px; /* Max width for content sections */
-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.07); /* Softer shadow */
+  padding: 25px;
+  background: #E9DED4;
+  border-radius: 10px;
+  margin: 25px auto;
+  max-width: 1150px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.07);
 }
 
 .users-view h2,
@@ -24,36 +24,36 @@ body {
 .reservations-view h2,
 .borrow-view h2 {
   text-align: center;
-  color: #5C4B51; /* Darker accent for titles */
+  color: #5C4B51;
   margin-top: 0;
   margin-bottom: 25px;
-  font-size: 1.7em; /* Adjusted size */
+  font-size: 1.7em;
 }
 
-/* === GENERAL TABLE STYLES (Applied via specific table classes) === */
+/* === GENERAL TABLE STYLES === */
 .users-table, .books-table, .reservations-table, .borrow-table {
   display: grid;
-  border: 1px solid #C5B8AE; /* Border color from your theme */
+  border: 1px solid #C5B8AE;
   border-radius: 6px;
-  overflow: hidden; /* For border-radius to apply to children */
+  overflow: hidden;
   margin-top: 20px;
-  font-size: 0.92em; /* Slightly adjusted table font size */
+  font-size: 0.92em;
 }
 
 .users-header, .books-header, .reservations-header, .borrow-header {
-  display: contents; /* Makes children direct grid items */
-  font-weight: 600; /* Bolder headers */
+  display: contents;
+  font-weight: 600;
 }
 
 .users-header .users-cell,
 .books-header .books-cell,
 .reservations-header .reservations-cell,
 .borrow-header .borrow-cell {
-  background: #9E7A6C; /* Your header background */
+  background: #9E7A6C;
   color: white;
-  padding: 12px 10px; /* Consistent header padding */
-  text-align: left; /* Default alignment, override if needed */
-  border-right: 1px solid #8a6a5d; /* Header cell separator */
+  padding: 12px 10px;
+  text-align: left;
+  border-right: 1px solid #8a6a5d;
 }
 .users-header .users-cell:last-child,
 .books-header .books-cell:last-child,
@@ -63,33 +63,32 @@ body {
 }
 .header-cell-centered { text-align: center !important; }
 
-
 .users-row, .books-row, .reservations-row, .borrow-row {
-  display: contents; /* Makes children direct grid items */
+  display: contents;
 }
 .users-row:nth-child(odd) .users-cell,
 .books-row:nth-child(odd) .books-cell,
 .reservations-row:nth-child(odd) .reservations-cell,
 .borrow-row:nth-child(odd) .borrow-cell {
-  background: #F7F1EC; /* Your odd row color */
+  background: #F7F1EC;
 }
 .users-row:nth-child(even) .users-cell,
 .books-row:nth-child(even) .books-cell,
 .reservations-row:nth-child(even) .reservations-cell,
 .borrow-row:nth-child(even) .borrow-cell {
-  background: #FFFFFF; /* Your even row color */
+  background: #FFFFFF;
 }
 .users-row:hover .users-cell,
 .books-row:hover .books-cell,
 .reservations-row:hover .reservations-cell,
 .borrow-row:hover .borrow-cell {
-  background: #E8E4E0; /* Subtle hover */
+  background: #E8E4E0;
 }
 
 .users-cell, .books-cell, .reservations-cell, .borrow-cell {
-  padding: 10px 10px; /* Consistent cell padding */
-  border-bottom: 1px solid #D3C9C1; /* Lighter row separator */
-  border-right: 1px solid #E0D8D0; /* Data cell separator */
+  padding: 10px 10px;
+  border-bottom: 1px solid #D3C9C1;
+  border-right: 1px solid #E0D8D0;
   display: flex;
   align-items: center;
   word-break: break-word;
@@ -101,19 +100,17 @@ body {
   border-right: none;
 }
 
-/* Input/Select styles within any table cell */
-/* IMPORTANT: Removed borrow status buttons from this generic rule */
 .users-cell input, .users-cell select,
 .books-cell input, .books-cell select, .books-cell .genre-dropdown,
 .reservations-cell input, .reservations-cell select, .reservations-cell .status-dropdown,
-.borrow-cell input, .borrow-cell select { /* ONLY actual inputs/selects here */
+.borrow-cell input, .borrow-cell select {
   width: 100%;
   padding: 7px 9px;
   border: 1px solid #BDBDBD;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 1em;
-  background-color: #fff; /* White background for inputs/selects */
+  background-color: #fff;
 }
 
 .users-cell input:focus, .users-cell select:focus,
@@ -124,7 +121,6 @@ body {
   outline: 1px solid #9E7A6C;
   box-shadow: 0 0 3px rgba(158, 122, 108, 0.3);
 }
-
 
 /* --- SPECIFIC TABLE LAYOUTS --- */
 .users-table { grid-template-columns: 0.4fr 1.3fr 1.6fr 1fr 1fr 1fr 0.7fr 1.5fr; }
@@ -139,19 +135,14 @@ body {
 .book-image-preview { width: 55px; height: 85px; object-fit: cover; border-radius: 3px; border: 1px solid #ccc; margin-top: 5px; }
 .cell-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
 
-.reservations-table { grid-template-columns: 0.8fr 2fr 2fr 1.2fr 1.2fr 1.2fr; } /* 6 Columns */
+.reservations-table { grid-template-columns: 0.8fr 2fr 2fr 1.2fr 1.2fr 1.2fr; }
 .reservations-header .reservations-cell:nth-child(1), .reservations-header .reservations-cell:nth-child(5) { text-align: center; }
 
-.borrow-table {
-  /* BorrowID, User(Name), Book(Title), BorrowDate, DueDate, StatusButton, ReturnDate */
-  grid-template-columns: 0.7fr 1.5fr 1.5fr 1.2fr 1.2fr 1.3fr 1.2fr; /* 7 columns */
-}
+.borrow-table { grid-template-columns: 0.7fr 1.5fr 1.5fr 1.2fr 1.2fr 1.3fr 1.2fr; }
 .borrow-header .borrow-cell:nth-child(1),.borrow-header .borrow-cell:nth-child(6),.borrow-header .borrow-cell:nth-child(7) { text-align: center; }
 .borrow-row .borrow-cell:nth-child(1),.borrow-row .borrow-cell:nth-child(6),.borrow-row .borrow-cell:nth-child(7) { justify-content: center; text-align: center; }
 .borrow-status-action-cell { justify-content: center; }
 
-
-/* === ACTIONS CELL CONTENT (Common for all tables) === */
 .actions-cell-content { display: flex; gap: 8px; justify-content: center; width: 100%; }
 
 /* === COMMON BUTTON STYLES === */
@@ -160,7 +151,7 @@ body {
   padding: 6px 12px; color: white; border: none; border-radius: 5px; cursor: pointer;
   font-size: 0.88em; transition: background-color 0.2s ease, transform 0.1s ease;
   min-width: 65px; text-align: center; font-weight: 500;
-  box-sizing: border-box; display: inline-block; width: auto; /* Allow natural width */
+  box-sizing: border-box; display: inline-block; width: auto;
 }
 .action-button:hover, .delete-button:hover, .edit-btn:hover, .mark-returned-action-button:hover { opacity: 0.9; }
 .action-button:active, .delete-button:active, .edit-btn:active, .mark-returned-action-button:active { transform: translateY(1px); }
@@ -168,7 +159,6 @@ body {
 .action-button { background: #5D7A8C; }
 .delete-button { background: #D9534F; }
 .edit-btn { background: #4A90E2 !important; }
-
 .mark-returned-action-button { background-color: #5cb85c; color: white; }
 .mark-returned-action-button:hover { background-color: #4cae4c; }
 .returned-status-button { background-color: #777; color: #fff; cursor: not-allowed; opacity: 0.7; }
@@ -191,14 +181,70 @@ body {
 .user-form h3, .book-form h3, .reservation-form h3, .borrow-form h3 { text-align: center; margin-top: 0; margin-bottom: 22px; color: #5C4B51; font-size: 1.3em; }
 .form-group { margin-bottom: 18px; }
 .form-group label { display: block; margin-bottom: 7px; font-weight: 500; color: #444; font-size: 0.92em; }
-.form-group input[type="text"], .form-group input[type="email"], .form-group input[type="password"],
-.form-group input[type="number"], .form-group input[type="tel"], .form-group input[type="date"],
-.form-group select {
-  width: 100%; padding: 10px 12px; border: 1px solid #CCC; border-radius: 5px;
-  box-sizing: border-box; font-size: 0.95em; background-color: #fff;
+
+/* --- TARGETED FIX FOR FORM INPUT WIDTHS --- */
+/* This rule is now more specific by including the form's class */
+.user-form .form-group input[type="text"], 
+.user-form .form-group input[type="email"], 
+.user-form .form-group input[type="password"],
+.user-form .form-group input[type="number"], 
+.user-form .form-group input[type="tel"], 
+.user-form .form-group input[type="date"],
+.user-form .form-group select,
+.book-form .form-group input[type="text"], /* Apply to other forms too if needed */
+.book-form .form-group select,
+.borrow-form .form-group input[type="text"],
+.borrow-form .form-group input[type="number"],
+.borrow-form .form-group input[type="date"],
+.borrow-form .form-group select,
+/* Add more comprehensive input targeting */
+.user-form .form-group input,
+.book-form .form-group input,
+.borrow-form .form-group input,
+.reservation-form .form-group input,
+.reservation-form .form-group select
+/* Add other specific form classes and their inputs/selects if they exist and need this styling */
+ {
+  display: block !important;
+  width: 100% !important;   
+  padding: 10px 12px !important; 
+  border: 1px solid #CCC !important; 
+  border-radius: 5px !important;
+  box-sizing: border-box !important; 
+  font-size: 0.95em !important; 
+  background-color: #fff !important; /* Explicitly set background */
+  margin: 0 !important; 
 }
-.form-group input[type="file"] { padding: 8px; border: 1px solid #CCC; border-radius: 5px; width: 100%; box-sizing: border-box; background-color: #fff; }
-.form-group input:focus, .form-group select:focus { border-color: #9E7A6C; outline: none; box-shadow: 0 0 0 3px rgba(158, 122, 108, 0.2); }
+
+/* File inputs might need separate or slightly different styling if the above causes issues for them */
+.user-form .form-group input[type="file"],
+.book-form .form-group input[type="file"] 
+/* Add other specific form classes and their file inputs */
+{ 
+  display: block;
+  width: 100%;
+  padding: 8px; 
+  border: 1px solid #CCC; 
+  border-radius: 5px; 
+  box-sizing: border-box; 
+  background-color: #fff;
+}
+
+/* Focus styles for all form inputs/selects */
+.user-form .form-group input:focus, 
+.user-form .form-group select:focus,
+.book-form .form-group input:focus,
+.book-form .form-group select:focus,
+.borrow-form .form-group input:focus,
+.borrow-form .form-group select:focus
+/* Add other specific form classes */
+{ 
+  border-color: #9E7A6C; 
+  outline: none; 
+  box-shadow: 0 0 0 3px rgba(158, 122, 108, 0.2); 
+}
+/* --- END OF TARGETED FIX --- */
+
 .user-form .add-user-btn, .book-form .add-book-btn,
 .reservation-form .add-reservation-btn, .borrow-form .add-borrow-btn { display: block; width: 100%; margin-top: 15px; padding: 12px; font-size: 1em; }
 
@@ -215,7 +261,6 @@ body {
 }
 .category-card:hover { transform: translateY(-4px); box-shadow: 0 5px 10px rgba(0,0,0,0.12); }
 .card-img { margin-bottom: 12px; background-size: contain; background-repeat: no-repeat; background-position: center; }
-/* !!! IMPORTANT: VERIFY THESE PATHS ARE CORRECT RELATIVE TO YOUR CSS FILE !!! */
 .books-icon { background-image: url('../assets/books-stack-of-three-removebg-preview.png'); width: 90px; height: 90px; }
 .users-icon { background-image: url('../assets/group-removebg-preview.png'); width: 90px; height: 90px; }
 .reservations-icon { background-image: url('../assets/reservation-removebg-preview.png'); width: 85px; height: 85px; }
@@ -239,5 +284,9 @@ body {
   .book-cover-actions-cell .cell-actions { flex-direction: row; width: 100%; margin-top: 5px; gap: 6px; }
   .book-cover-actions-cell .image-edit-area input[type="file"] { width: 100%; max-width: none; font-size: 0.8em; }
   .add-book-btn, .add-user-btn, .add-reservation-btn, .add-borrow-btn { padding: 10px 18px; font-size: 0.95em; }
-  .form-group input, .form-group select { padding: 9px 10px; font-size: 0.9em; }
+  /* Ensure form inputs also respond well */
+  .form-group input, .form-group select { 
+    padding: 9px 10px; 
+    font-size: 0.9em; /* Slightly smaller font on mobile for inputs */
+  }
 }
