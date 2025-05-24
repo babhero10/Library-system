@@ -1,0 +1,94 @@
+/* src/styles/NotFoundPage.css */
+
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh; /* Take up most of the viewport height */
+  text-align: center;
+  padding: 20px;
+  background-color: #f4f4f4; /* Light gray background for the page */
+  font-family: 'Karla', sans-serif; /* Match your app's font */
+}
+
+.not-found-content {
+  background-color: #ffffff;
+  padding: 40px 50px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.not-found-title {
+  font-size: 6em; /* Large "404" */
+  font-weight: bold;
+  color: #5C4B51; /* Your theme's accent color */
+  margin: 0 0 10px 0;
+  line-height: 1;
+}
+
+.not-found-subtitle {
+  font-size: 1.8em;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.not-found-message {
+  font-size: 1.1em;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.not-found-button {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 1em;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #7E7F9A; /* A primary button color from your theme */
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.not-found-button:hover {
+  background-color: #6c6d86; /* Darker shade on hover */
+}
+
+.not-found-button:active {
+  transform: translateY(1px);
+}
+
+/* Optional: Add a subtle graphic or icon if desired */
+/* .not-found-content::before {
+  content: '😕'; 
+  font-size: 3em;
+  display: block;
+  margin-bottom: 15px;
+  color: #9E7A6C;
+} */
+
+@media (max-width: 600px) {
+  .not-found-content {
+    padding: 30px 25px;
+  }
+  .not-found-title {
+    font-size: 5em;
+  }
+  .not-found-subtitle {
+    font-size: 1.5em;
+  }
+  .not-found-message {
+    font-size: 1em;
+  }
+  .not-found-button {
+    padding: 10px 20px;
+    font-size: 0.95em;
+  }
+}

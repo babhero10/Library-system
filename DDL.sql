@@ -18,10 +18,10 @@ CREATE TABLE Users (
 
 CREATE TABLE Authors (
     author_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    ol_author_key VARCHAR(50) UNIQUE,
+    ol_author_key VARCHAR(50),
     author_name VARCHAR(255) NOT NULL,
     biography TEXT,
-    author_image_url VARCHAR(512),
+    author_image_url VARCHAR(512) DEFAULT 'images/default-author.png',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uq_author_name_bio UNIQUE (author_name(100), biography(100))
 );
@@ -33,17 +33,14 @@ CREATE TABLE Genres (
 );
 
 INSERT INTO Genres (genre_name) VALUES
-('Horror'), ('Spirituality'), ('Science Fiction'),
-('Young Adult'), ('Crime'), ('Art'), ('Contemporary'),
-('Travel'), ('Classic'), ('Supernatural'), ('Children'),
-('Cooking'), ('Comedy'), ('Technology'), ('Sports'),
-('Drama'), ('Education'), ('Philosophy'), ('Romance'),
-('Self-Help'), ('Science'), ('Parenting'), ('Poetry'),
-('Economics'), ('Thriller'), ('Music'), ('Memoir'), ('Health'),
-('Psychology'), ('Suspense'), ('History'), ('Business'),
-('Politics'), ('Fantasy'), ('Mystery'), ('Western'),
-('Mythology'), ('Relationships'), ('War'), ('Dystopian'),
-('Historical Fiction'), ('Biography');
+('Adventure'), ('Art'), ('Biography'), ('Business'), ('Children'),
+('Classic'), ('Comedy'), ('Contemporary'), ('Crime'), ('Dystopian'),
+('Economics'), ('Education'), ('Fantasy'), ('Health'), ('Historical Fiction'),
+('History'), ('Horror'), ('Memoir'), ('Music'), ('Mystery'),
+('Mythology'), ('Parenting'), ('Philosophy'), ('Poetry'), ('Politics'),
+('Psychology'), ('Relationships'), ('Romance'), ('Science'), ('Science Fiction'),
+('Self-Help'), ('Short Stories'), ('Spirituality'), ('Sports'), ('Suspense'),
+('Technology'), ('Travel'), ('War'), ('Western'), ('Young Adult');
 
 CREATE TABLE Books (
     book_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -53,7 +50,7 @@ CREATE TABLE Books (
     description TEXT,
     publication_year INT,
     language VARCHAR(50),
-    cover_image_url VARCHAR(512),
+    cover_image_url VARCHAR(512) DEFAULT 'images/default-book-cover.png',
     target_stock_count INT DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -82,6 +79,7 @@ CREATE TABLE Reservations (
     status VARCHAR(20) NOT NULL DEFAULT 'pending'
         CHECK (status IN ('pending', 'available', 'fulfilled', 'cancelled', 'expired')),
     expires_at TIMESTAMP NULL,
+    CONSTRAINT uq_user_book_reservation UNIQUE (user_id, book_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE
 );

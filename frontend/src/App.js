@@ -12,8 +12,8 @@ import AuthorPage from './pages/AuthorPage';
 import ReservationPage from './pages/ReservationPage';
 import SearchPage from './pages/SearchPage';
 import AdminPage from './pages/AdminPage';
-// Example: import UserProfilePage from './pages/UserProfilePage';
-// Example: import NotFoundPage from './pages/NotFoundPage';
+ import UserProfilePage from './pages/AccountPage';
+ import NotFoundPage from './pages/NotFoundPage';
 
 
 // Component Imports
@@ -62,7 +62,6 @@ const LayoutManager = () => {
           }
         />
         
-        {/* Example of another protected route:
         <Route
           path="/profile"
           element={
@@ -71,11 +70,8 @@ const LayoutManager = () => {
             </ProtectedRoute>
           }
         />
-        */}
 
-        {/* Optional: A catch-all route for 404 Not Found pages
         <Route path="*" element={<NotFoundPage />} />
-        */}
       </Routes>
     </>
   );

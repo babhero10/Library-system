@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // Import useAuth
@@ -9,7 +8,7 @@ import { FaChevronDown } from 'react-icons/fa';
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
+
   const navigate = useNavigate();
   const { currentUser, logout, isLoading } = useAuth(); // Get currentUser and logout from context
 
@@ -22,7 +21,7 @@ function Header() {
       setSearchTerm(''); // Clear search bar after search
     }
   };
-  
+
   const handleSearchIconClick = () => {
     if (searchTerm.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
@@ -68,10 +67,7 @@ function Header() {
   // Placeholder for DEV toggle, not connected to actual API
   // const devToggleLoginState = () => console.log("DEV: Toggle Login state (visual only)");
 
-  if (isLoading) { // Don't render user actions until auth state is resolved
-    // You could return a simplified header or null during initial auth check
-    // For simplicity, we'll just not show user actions yet.
-  }
+  // isLoading check moved to where currentUser is used.
 
   return (
     <header className="app-header">
@@ -98,30 +94,35 @@ function Header() {
           />
         </div>
         <div className="header-user-actions" ref={userActionRef}>
-          {!isLoading && ( // Only render user actions once loading is false
-            currentUser ? (
-              <div className="header-user-info" onClick={toggleDropdown} tabIndex={0} 
-                   onKeyDown={(e) => e.key === 'Enter' && toggleDropdown()}  role="button" aria-haspopup="true" aria-expanded={isDropdownOpen}>
-                <span>Hi, {currentUser.name || currentUser.email?.split('@')[0] || 'User'}!</span> {/* Display user's name or part of email */}
-                <FaChevronDown className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`} aria-hidden="true"/>
-                {isDropdownOpen && (
-                  <div className="header-dropdown-menu" ref={dropdownRef} role="menu">
-                    <Link to="/profile" className="dropdown-item" onClick={() => setIsDropdownOpen(false)} role="menuitem"> 
-                      My Account {/* TODO: Create /profile route and page */}
+          {isLoading ? (
+            <div className="header-auth-links">Loading...</div> // Or some placeholder
+          ) : currentUser ? (
+            <div className="header-user-info" onClick={toggleDropdown} tabIndex={0}
+                 onKeyDown={(e) => e.key === 'Enter' && toggleDropdown()}  role="button" aria-haspopup="true" aria-expanded={isDropdownOpen}>
+              <span>Hi, {currentUser.full_name || currentUser.email?.split('@')[0] || 'User'}!</span>
+              <FaChevronDown className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`} aria-hidden="true"/>
+              {isDropdownOpen && (
+                <div className="header-dropdown-menu" ref={dropdownRef} role="menu">
+                  <Link to="/profile" className="dropdown-item" onClick={() => setIsDropdownOpen(false)} role="menuitem">
+                    My Account {/* TODO: Create /profile route and page */}
+                  </Link>
+                  {currentUser.role === 'admin' && ( // Conditionally show Admin link
+                    <Link to="/admin" className="dropdown-item" onClick={() => setIsDropdownOpen(false)} role="menuitem">
+                      Admin Panel
                     </Link>
-                    <button onClick={handleLogout} className="dropdown-item dropdown-button" role="menuitem">
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="header-auth-links">
-                <Link to="/login" className="header-auth-link">Login</Link>
-                <span className="auth-link-separator">|</span>
-                <Link to="/signup" className="header-auth-link">Sign Up</Link>
-              </div>
-            )
+                  )}
+                  <button onClick={handleLogout} className="dropdown-item dropdown-button" role="menuitem">
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="header-auth-links">
+              <Link to="/login" className="header-auth-link">Login</Link>
+              <span className="auth-link-separator">|</span>
+              <Link to="/signup" className="header-auth-link">Sign Up</Link>
+            </div>
           )}
         </div>
       </div>

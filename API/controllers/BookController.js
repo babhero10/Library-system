@@ -214,8 +214,8 @@ class BookController {
 
       if (result.success) {
         if (bookResult.success && bookResult.data.cover_image_url) {
-          const imagePath = path.join(__dirname, '../../..', bookResult.data.cover_image_url); // Adjust path
-          try { await fs.unlink(imagePath); } catch (e) { console.warn("Image not found or could not be deleted:", imagePath); }
+          // const imagePath = path.join(__dirname, '../../..', bookResult.data.cover_image_url); // Adjust path
+          // try { await fs.unlink(imagePath); } catch (e) { console.warn("Image not found or could not be deleted:", imagePath); }
         }
         return res.status(200).json({
           success: true,
@@ -244,6 +244,7 @@ class BookController {
         name, 
         category, 
         categoryType, 
+        language,
         year, 
         startYear, 
         endYear, 
@@ -284,6 +285,7 @@ class BookController {
         name, 
         category, 
         categoryType, 
+        language,
         year: year ? parseInt(year) : undefined, 
         startYear: startYear ? parseInt(startYear) : undefined, 
         endYear: endYear ? parseInt(endYear) : undefined, 

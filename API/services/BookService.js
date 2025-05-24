@@ -8,10 +8,7 @@ class BookService {
   static async createBook(bookData) {
     try {
       const book = await Book.create(bookData);
-      // To return with full details, you could call getBookById:
-      // const detailedBook = await this.getBookById(book.book_id);
-      // return detailedBook; // This would be { success: true, data: { ... } }
-      return { success: true, data: book }; // Returns basic created book
+      return { success: true, data: book };
     } catch (error) {
       if (error.name === 'SequelizeUniqueConstraintError') {
         if (error.fields && error.fields.ol_work_key) {
@@ -19,7 +16,9 @@ class BookService {
         }
         return { success: false, error: `A unique constraint was violated: ${error.errors.map(e => e.message).join(', ')}` };
       }
-      return { success: false, error: error.message };
+      // For other errors, let the controller handle based on the re-thrown error
+      console.error('Error in BookService.createBook:', error);
+      throw error;
     }
   }
 
@@ -28,16 +27,8 @@ class BookService {
       const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
       let whereClause = {};
       const includeClauses = [
-        {
-          model: Genre,
-          as: 'MainGenre',
-          attributes: ['name'] // 'name' is the model attribute (maps to 'genre_name' in DB)
-        },
-        {
-          model: Author,
-          as: 'Author',
-          attributes: ['author_name'] // Requesting 'author_name' directly
-        }
+        { model: Genre, as: 'MainGenre', attributes: ['name'] },
+        { model: Author, as: 'Author', attributes: ['author_name'] }
       ];
 
       if (search && search.trim()) {
@@ -47,8 +38,8 @@ class BookService {
             { title: { [Op.like]: searchTerm } },
             { description: { [Op.like]: searchTerm } },
             { language: { [Op.like]: searchTerm } },
-            { '$MainGenre.name$': { [Op.like]: searchTerm } }, // Search by Genre's model attribute 'name'
-            { '$Author.author_name$': { [Op.like]: searchTerm } } // Search by Author's model attribute 'author_name'
+            { '$MainGenre.name$': { [Op.like]: searchTerm } },
+            { '$Author.author_name$': { [Op.like]: searchTerm } }
           ]
         };
       }
@@ -59,21 +50,20 @@ class BookService {
         limit: parseInt(limit, 10),
         offset: offset,
         order: [['created_at', 'DESC']],
-        distinct: true // Important with includes and complex where/limits
+        distinct: true
       });
 
       const booksWithDetails = rows.map(bookInstance => {
         const book = bookInstance.get({ plain: true });
-        book.genre_name_display = book.MainGenre ? book.MainGenre.name : null; // Using the 'name' attribute from Genre model
-        book.author_name_display = book.Author ? book.Author.author_name : null; // Using 'author_name' from Author model
-        // Original IDs are already on 'book' (book.genre_id, book.author_id)
-        delete book.MainGenre; // Clean up nested object
-        delete book.Author;    // Clean up nested object
+        book.genre_name_display = book.MainGenre ? book.MainGenre.name : null;
+        book.author_name_display = book.Author ? book.Author.author_name : null;
+        delete book.MainGenre;
+        delete book.Author;
         return book;
       });
 
       return {
-        success: true,
+        success: true, // Keep this structure if controller expects it
         data: {
           books: booksWithDetails,
           totalBooks: count,
@@ -82,8 +72,8 @@ class BookService {
         }
       };
     } catch (error) {
-      console.error('Error in getAllBooks:', error);
-      return { success: false, error: error.message };
+      console.error('Error in BookService.getAllBooks:', error);
+      throw error; // Re-throw for controller to handle
     }
   }
 
@@ -91,34 +81,20 @@ class BookService {
     try {
       const bookInstance = await Book.findByPk(bookId, {
         include: [
-          {
-            model: Genre,
-            as: 'MainGenre',
-            attributes: ['name'] // Genre model attribute 'name'
-          },
-          {
-            model: Author,
-            as: 'Author',
-            attributes: ['author_name', 'author_id'] // Author model attribute 'author_name' + its ID
-          }
+          { model: Genre, as: 'MainGenre', attributes: ['name'] },
+          { model: Author, as: 'Author', attributes: ['author_name', 'author_id'] }
         ]
       });
-
       if (!bookInstance) {
-        return { success: false, error: 'Book not found' };
+        throw new Error('Book not found');
       }
-
       const book = bookInstance.get({ plain: true });
       book.genre_name_display = book.MainGenre ? book.MainGenre.name : null;
       book.author_name_display = book.Author ? book.Author.author_name : null;
-      // Retain Author object if you want more details like author_id from the join
-      // If you only want the name, you can delete book.Author after extracting the name.
-      // delete book.MainGenre;
-      // delete book.Author; // Or just extract what you need and delete
-      return { success: true, data: book };
+      return { success: true, data: book }; // Keep success structure
     } catch (error)      {
-      console.error(`Error in getBookById for ID ${bookId}:`, error);
-      return { success: false, error: error.message };
+      console.error(`Error in BookService.getBookById for ID ${bookId}:`, error);
+      throw error;
     }
   }
 
@@ -126,112 +102,64 @@ class BookService {
     try {
       const bookInstance = await Book.findOne({
         where: { ol_work_key: olWorkKey },
-        include: [
-          {
-            model: Genre,
-            as: 'MainGenre',
-            attributes: ['name']
-          },
-          {
-            model: Author,
-            as: 'Author',
-            attributes: ['author_name']
-          }
-        ]
+        include: [ /* ... includes ... */ ]
       });
-
-      if (!bookInstance) {
-        return { success: false, error: 'Book not found' };
-      }
-
-      const book = bookInstance.get({ plain: true });
+      if (!bookInstance) throw new Error('Book not found by OL key');
+      // ... map data ...
+      const book = bookInstance.get({ plain: true }); // Example mapping
       book.genre_name_display = book.MainGenre ? book.MainGenre.name : null;
       book.author_name_display = book.Author ? book.Author.author_name : null;
       delete book.MainGenre;
       delete book.Author;
-
       return { success: true, data: book };
     } catch (error) {
       console.error(`Error in getBookByOLKey for key ${olWorkKey}:`, error);
-      return { success: false, error: error.message };
+      throw error;
     }
   }
 
   static async updateBook(bookId, updateData) {
     try {
       const book = await Book.findByPk(bookId);
-      if (!book) {
-        return { success: false, error: 'Book not found' };
-      }
-
-      // Explicitly only allow certain fields to be updated if necessary
-      // const allowedUpdates = { title: updateData.title, description: updateData.description, ... };
-      // await book.update(allowedUpdates);
-
-      updateData.updated_at = new Date(); // Manually set updated_at if not auto-managed by Sequelize for every update
+      if (!book) throw new Error('Book not found for update');
+      updateData.updated_at = new Date();
       await book.update(updateData);
-
-      // Re-fetch to get included associations
-      return this.getBookById(bookId);
+      return this.getBookById(bookId); // This will return { success: true, data: ... }
     } catch (error) {
-      if (error.name === 'SequelizeUniqueConstraintError') {
-        if (error.fields && error.fields.ol_work_key) {
-          return { success: false, error: 'Book with this OpenLibrary work key already exists' };
-        }
-        return { success: false, error: `A unique constraint was violated: ${error.errors.map(e => e.message).join(', ')}` };
-      }
       console.error(`Error in updateBook for ID ${bookId}:`, error);
-      return { success: false, error: error.message };
+      throw error;
     }
   }
 
   static async deleteBook(bookId) {
     try {
       const book = await Book.findByPk(bookId);
-      if (!book) {
-        return { success: false, error: 'Book not found' };
-      }
+      if (!book) throw new Error('Book not found for deletion');
       await book.destroy();
       return { success: true, message: 'Book deleted successfully' };
     } catch (error) {
       console.error(`Error in deleteBook for ID ${bookId}:`, error);
-      return { success: false, error: error.message };
+      throw error;
     }
   }
 
   static async searchBooks(searchParams) {
     try {
       const {
-        name, // Book title
-        category, // Either language or genre_name or author_name value
-        categoryType, // 'language', 'genre', or 'author'
-        year,
-        startYear,
-        endYear,
-        page = 1,
-        limit = 10
+        name, category, categoryType, language,
+        year, startYear, endYear,
+        page = 1, limit = 10
       } = searchParams;
+
+      console.log("Backend BookService.searchBooks received params:", searchParams);
 
       const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
       const whereClause = {};
-      const includeClauses = [];
-
-      // Always include MainGenre and Author to allow filtering and display
-      const mainGenreInclude = {
-        model: Genre,
-        as: 'MainGenre',
-        attributes: ['name'],
-        required: false // Default to LEFT JOIN
-      };
-      includeClauses.push(mainGenreInclude);
-
-      const authorInclude = {
-        model: Author,
-        as: 'Author',
-        attributes: ['author_name'],
-        required: false // Default to LEFT JOIN
-      };
-      includeClauses.push(authorInclude);
+      
+      const includeClauses = [
+        { model: Genre, as: 'MainGenre', attributes: ['name'], required: false },
+        { model: Author, as: 'Author', attributes: ['author_name'], required: false }
+      ];
 
       if (name && name.trim()) {
         whereClause.title = { [Op.like]: `%${name.trim()}%` };
@@ -240,14 +168,23 @@ class BookService {
       if (category && category.trim() && categoryType) {
         const categorySearchTerm = `%${category.trim()}%`;
         if (categoryType === 'genre') {
-          mainGenreInclude.where = { name: { [Op.like]: categorySearchTerm } }; // Filter on Genre model's 'name' attribute
-          mainGenreInclude.required = true; // Change to INNER JOIN
-        } else if (categoryType === 'language') {
-          whereClause.language = { [Op.like]: categorySearchTerm };
+          const genreInclude = includeClauses.find(inc => inc.as === 'MainGenre');
+          if (genreInclude) {
+            genreInclude.where = { name: { [Op.like]: categorySearchTerm } };
+            genreInclude.required = true;
+          }
         } else if (categoryType === 'author') {
-          authorInclude.where = { author_name: { [Op.like]: categorySearchTerm } }; // Filter on Author model's 'author_name'
-          authorInclude.required = true; // Change to INNER JOIN
+          const authorInclude = includeClauses.find(inc => inc.as === 'Author');
+          if (authorInclude) {
+            authorInclude.where = { author_name: { [Op.like]: categorySearchTerm } };
+            authorInclude.required = true;
+          }
         }
+      }
+
+      if (language && language.trim()) {
+        whereClause.language = { [Op.like]: language.trim() }; 
+        console.log("Backend: Applying language filter:", whereClause.language);
       }
 
       if (year && !isNaN(year)) {
@@ -267,8 +204,8 @@ class BookService {
         include: includeClauses,
         limit: parseInt(limit, 10),
         offset: offset,
-        order: [['title', 'ASC']], // Or any other preferred order
-        distinct: true // Important for counts with required includes
+        order: [['title', 'ASC']],
+        distinct: true
       });
 
       const booksWithDetails = rows.map(bookInstance => {
@@ -287,37 +224,40 @@ class BookService {
           totalBooks: count,
           totalPages: Math.ceil(count / parseInt(limit, 10)),
           currentPage: parseInt(page, 10),
-          searchCriteria: { name, category, categoryType, year, startYear, endYear }
+          // ***** CORRECTED THIS PART *****
+          searchCriteria: { 
+            name: name || null,  // Ensure undefined becomes null for consistent JSON
+            category: category || null, 
+            categoryType: categoryType || null, 
+            language: language || null, // Now language is included
+            year: year || null, 
+            startYear: startYear || null, 
+            endYear: endYear || null 
+          }
         }
       };
     } catch (error) {
-      console.error('Error in searchBooks:', error);
-      return { success: false, error: error.message };
+      console.error('Error in BookService.searchBooks:', error);
+      if (error.original && error.original.sqlMessage) {
+          throw new Error(`Database Error: ${error.original.sqlMessage}`);
+      }
+      throw new Error(error.message || 'Failed to search books due to a server error.');
     }
   }
 
   static async getAllGenres() {
     try {
       const genres = await Genre.findAll({
-        attributes: ['name'], // 'name' is the model attribute (maps to 'genre_name' in DB)
-        where: {
-          name: { // Querying based on the model attribute 'name'
-            [Op.not]: null,
-            [Op.ne]: ''
-          }
-        },
-        order: [['name', 'ASC']], // Order by model attribute 'name'
-        raw: true // Get plain objects directly
+        attributes: ['name'],
+        where: { name: { [Op.not]: null, [Op.ne]: '' } },
+        order: [['name', 'ASC']],
+        group: ['name'], raw: true
       });
-      // 'raw: true' means genres is already an array of { name: '...' }
       const uniqueGenres = genres.map(genre => genre.name);
-      return {
-        success: true,
-        data: uniqueGenres
-      };
+      return { success: true, data: uniqueGenres };
     } catch (error) {
       console.error('Error in getAllGenres:', error);
-      return { success: false, error: error.message };
+      throw new Error(error.message || 'Failed to fetch genres.');
     }
   }
 }

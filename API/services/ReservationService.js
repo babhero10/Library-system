@@ -213,7 +213,7 @@ class ReservationService {
         where,
         order,
         include: [
-          { model: User, attributes: ['user_id', 'username'] },
+          { model: User, attributes: ['user_id', 'full_name'] },
           { model: Book, attributes: ['book_id', 'title'] }
         ]
       };

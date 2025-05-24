@@ -98,11 +98,11 @@ const SignUpPage = () => {
       try {
         // Prepare data for API (match backend expected field names)
         const apiData = {
-          full_name: formData.fullName, // Example: if backend expects 'name'
+          fullName: formData.fullName, // Example: if backend expects 'name'
           email: formData.email,
           password: formData.password,
-          phone_number: formData.phone, // Example: if backend expects 'phoneNumber'
-          data_of_birth: formData.birthDate, // Example: if backend expects 'dateOfBirth'
+          phone: formData.phone, // Example: if backend expects 'phoneNumber'
+          birthDate: formData.birthDate, // Example: if backend expects 'dateOfBirth'
           role: 'user',
         };
         // Remove confirmPassword as it's not usually sent to backend

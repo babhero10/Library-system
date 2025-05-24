@@ -1,0 +1,236 @@
+/* src/styles/AccountPage.css */
+
+.account-page-container {
+  max-width: 800px;
+  margin: 40px auto; /* More top/bottom margin */
+  padding: 20px 30px; /* More horizontal padding */
+  background-color: #FFFFFF; /* White background for the main card */
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.account-title {
+  text-align: center;
+  color: #5C4B51; /* Consistent with other admin titles */
+  margin-bottom: 30px;
+  font-size: 2em;
+  border-bottom: 1px solid #E0E0E0;
+  padding-bottom: 15px;
+}
+
+.account-details-card,
+.account-actions-card {
+  background-color: #FDFDFD; /* Slightly off-white for inner cards */
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border: 1px solid #E8E8E8;
+}
+
+.account-details-card h2,
+.account-actions-card h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #4A4A4A; /* Dark gray for subheadings */
+  font-size: 1.4em;
+  border-bottom: 1px solid #F0F0F0;
+  padding-bottom: 10px;
+}
+
+.profile-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+  gap: 18px; /* Space between items */
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column; /* Label above value */
+  padding: 10px 0; /* Some vertical padding */
+  /* border-bottom: 1px dashed #EFEFEF; /* Optional subtle separator */
+}
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #777; /* Muted label color */
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  text-transform: uppercase; /* Optional: make labels uppercase */
+}
+
+.info-value {
+  color: #333;
+  font-size: 1em;
+  word-break: break-word; /* Handle long email addresses or names */
+}
+
+/* Button styling (can be shared with other button styles if you have a common system) */
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1.4;
+  margin-top: 15px; /* Space above button */
+}
+
+.edit-profile-button {
+  background-color: #64B5F6; /* Muted blue */
+  color: white;
+  display: block; /* Make it take full width or align as needed */
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+}
+.edit-profile-button:hover {
+  background-color: #4a9edd;
+}
+
+.change-password-button {
+  background-color: #8E8E8E; /* Gray for less primary action */
+  color: white;
+}
+.change-password-button:hover {
+  background-color: #707070;
+}
+
+/* Placeholder for edit form */
+.account-edit-form {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+.account-edit-form .form-group { /* Assuming you use .form-group from AdminPage.css */
+  margin-bottom: 15px;
+}
+.save-changes-button {
+  background-color: #5cb85c; /* Green for save */
+  color: white;
+  display: block;
+  width: 100%;
+}
+.save-changes-button:hover {
+  background-color: #4cae4c;
+}
+
+
+/* Loading and Error Messages */
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.1em;
+}
+.error-message {
+  color: #D83A56; /* Consistent error color */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .account-page-container {
+    margin: 20px 15px; /* Reduce side margins */
+    padding: 15px;
+  }
+  .account-title {
+    font-size: 1.7em;
+    margin-bottom: 20px;
+  }
+  .account-details-card h2,
+  .account-actions-card h2 {
+    font-size: 1.2em;
+  }
+  .profile-info-grid {
+    grid-template-columns: 1fr; /* Stack info items on small screens */
+    gap: 12px;
+  }
+  .button {
+    width: 100%; /* Make buttons full width on small screens */
+    text-align: center;
+  }
+  .edit-profile-button {
+     width: auto; /* Allow edit button to size to content if preferred on mobile */
+     display: inline-block; /* If not full width */
+  }
+}
+
+/* src/styles/AccountPage.css */
+/* ... (Keep all your existing styles from the previous answer) ... */
+
+/* === CHANGE PASSWORD FORM === */
+.change-password-form {
+  margin-top: 15px;
+}
+
+/* .form-group is assumed to be styled globally or in AdminPage.css,
+   but if not, you can add specific styles here: */
+.change-password-form .form-group {
+  margin-bottom: 18px;
+}
+.change-password-form .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #444;
+  font-size: 0.95em;
+}
+.change-password-form .form-group input[type="password"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+.change-password-form .form-group input[type="password"]:focus {
+  border-color: #7E7F9A; /* Or your theme's focus color */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(126, 127, 154, 0.2); /* Subtle focus shadow */
+}
+
+.change-password-submit-button {
+  background-color: #5D7A8C; /* A primary or distinct action color */
+  color: white;
+  display: block; /* Make it full width within its container */
+  width: 100%;
+  margin-top: 10px; /* Space above button */
+}
+.change-password-submit-button:hover {
+  background-color: #4c6575;
+}
+
+.password-message {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 500;
+}
+.password-message.success {
+  background-color: #e6ffed;
+  color: #22863a;
+  border: 1px solid #7ee096;
+}
+.password-message.error {
+  background-color: #ffeef0;
+  color: #d73a49;
+  border: 1px solid #ffc8ce;
+}
+
+/* Ensure error-text is styled (it's in your global AdminPage.css but good to have here too) */
+.change-password-form .error-text {
+  color: #D83A56; /* Your error color */
+  font-size: 0.875em;
+  display: block;
+  margin-top: 4px;
+}
+

@@ -2,492 +2,242 @@
 body {
   margin: 0;
   font-family: 'Karla', sans-serif;
-  background: #D0B39D;
+  background: #D0B39D; /* Overall page background */
+  color: #333;
 }
 
-/* === USERS VIEW === */
-.users-view {
-  padding: 20px;
-  background: #E9DED4;
-  border-radius: 8px;
-  margin-bottom: 20px;
+/* === VIEW WRAPPERS (for each admin section) === */
+.users-view,
+.books-view,
+.reservations-view,
+.borrow-view {
+  padding: 25px; /* Increased padding */
+  background: #E9DED4; /* Your section background */
+  border-radius: 10px; /* Slightly more rounded */
+  margin: 25px auto; /* Consistent margin and centering */
+  max-width: 1150px; /* Max width for content sections */
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.07); /* Softer shadow */
 }
 
-.users-table {
-  display: grid;
-  grid-template-columns: 0.5fr 1.5fr 1.8fr 1.2fr 1.2fr 1.2fr 1.8fr;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.users-header {
-  display: contents;
-  font-weight: bold;
-}
-
-.users-header .users-cell {
-  background: #9E7A6C;
-  color: white;
-  padding: 12px;
+.users-view h2,
+.books-view h2,
+.reservations-view h2,
+.borrow-view h2 {
   text-align: center;
+  color: #5C4B51; /* Darker accent for titles */
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.7em; /* Adjusted size */
 }
 
-.users-row {
-  display: contents;
+/* === GENERAL TABLE STYLES (Applied via specific table classes) === */
+.users-table, .books-table, .reservations-table, .borrow-table {
+  display: grid;
+  border: 1px solid #C5B8AE; /* Border color from your theme */
+  border-radius: 6px;
+  overflow: hidden; /* For border-radius to apply to children */
+  margin-top: 20px;
+  font-size: 0.92em; /* Slightly adjusted table font size */
 }
 
-.users-row:nth-child(odd) .users-cell {
-  background: #f7f1ec;
+.users-header, .books-header, .reservations-header, .borrow-header {
+  display: contents; /* Makes children direct grid items */
+  font-weight: 600; /* Bolder headers */
 }
 
-.users-row:nth-child(even) .users-cell {
-  background: white;
+.users-header .users-cell,
+.books-header .books-cell,
+.reservations-header .reservations-cell,
+.borrow-header .borrow-cell {
+  background: #9E7A6C; /* Your header background */
+  color: white;
+  padding: 12px 10px; /* Consistent header padding */
+  text-align: left; /* Default alignment, override if needed */
+  border-right: 1px solid #8a6a5d; /* Header cell separator */
+}
+.users-header .users-cell:last-child,
+.books-header .books-cell:last-child,
+.reservations-header .reservations-cell:last-child,
+.borrow-header .borrow-cell:last-child {
+  border-right: none;
+}
+.header-cell-centered { text-align: center !important; }
+
+
+.users-row, .books-row, .reservations-row, .borrow-row {
+  display: contents; /* Makes children direct grid items */
+}
+.users-row:nth-child(odd) .users-cell,
+.books-row:nth-child(odd) .books-cell,
+.reservations-row:nth-child(odd) .reservations-cell,
+.borrow-row:nth-child(odd) .borrow-cell {
+  background: #F7F1EC; /* Your odd row color */
+}
+.users-row:nth-child(even) .users-cell,
+.books-row:nth-child(even) .books-cell,
+.reservations-row:nth-child(even) .reservations-cell,
+.borrow-row:nth-child(even) .borrow-cell {
+  background: #FFFFFF; /* Your even row color */
+}
+.users-row:hover .users-cell,
+.books-row:hover .books-cell,
+.reservations-row:hover .reservations-cell,
+.borrow-row:hover .borrow-cell {
+  background: #E8E4E0; /* Subtle hover */
 }
 
-.users-cell {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+.users-cell, .books-cell, .reservations-cell, .borrow-cell {
+  padding: 10px 10px; /* Consistent cell padding */
+  border-bottom: 1px solid #D3C9C1; /* Lighter row separator */
+  border-right: 1px solid #E0D8D0; /* Data cell separator */
   display: flex;
   align-items: center;
+  word-break: break-word;
+}
+.users-cell:last-child,
+.books-cell:last-child,
+.reservations-cell:last-child,
+.borrow-cell:last-child {
+  border-right: none;
 }
 
-.users-cell input {
+/* Input/Select styles within any table cell */
+/* IMPORTANT: Removed borrow status buttons from this generic rule */
+.users-cell input, .users-cell select,
+.books-cell input, .books-cell select, .books-cell .genre-dropdown,
+.reservations-cell input, .reservations-cell select, .reservations-cell .status-dropdown,
+.borrow-cell input, .borrow-cell select { /* ONLY actual inputs/selects here */
   width: 100%;
-  padding: 5px;
-  border: 1px solid #ccc;
+  padding: 7px 9px;
+  border: 1px solid #BDBDBD;
   border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1em;
+  background-color: #fff; /* White background for inputs/selects */
 }
 
-.actions-cell {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
+.users-cell input:focus, .users-cell select:focus,
+.books-cell input:focus, .books-cell select:focus, .books-cell .genre-dropdown:focus,
+.reservations-cell input:focus, .reservations-cell select:focus, .reservations-cell .status-dropdown:focus,
+.borrow-cell input:focus, .borrow-cell select:focus {
+  border-color: #9E7A6C;
+  outline: 1px solid #9E7A6C;
+  box-shadow: 0 0 3px rgba(158, 122, 108, 0.3);
 }
 
-/* === BOOKS VIEW === */
-.books-view {
-  padding: 20px;
-  background: #E9DED4;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
 
-.books-table {
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 2fr 1.8fr;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  overflow: hidden;
-}
+/* --- SPECIFIC TABLE LAYOUTS --- */
+.users-table { grid-template-columns: 0.4fr 1.3fr 1.6fr 1fr 1fr 1fr 0.7fr 1.5fr; }
+.users-header .users-cell:nth-child(1), .users-header .users-cell:nth-child(7), .users-header .users-cell:nth-child(8) { text-align: center; }
+.users-row .users-cell:nth-child(1), .users-row .users-cell:nth-child(7), .users-row .users-cell:nth-child(8) { justify-content: center; text-align: center; }
 
-.books-header {
-  display: contents;
-  font-weight: bold;
-}
+.books-table { grid-template-columns: minmax(220px, 1.2fr) 2.5fr 1.5fr 1.8fr; }
+.book-cover-actions-cell { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 12px; }
+.book-image { width: 55px; height: 85px; object-fit: cover; border-radius: 3px; border: 1px solid #C0C0C0; flex-shrink: 0; }
+.book-cover-actions-cell .image-edit-area { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
+.book-cover-actions-cell .image-edit-area input[type="file"] { max-width: 150px; font-size: 0.85em; }
+.book-image-preview { width: 55px; height: 85px; object-fit: cover; border-radius: 3px; border: 1px solid #ccc; margin-top: 5px; }
+.cell-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
 
-.books-header .books-cell {
-  background: #9E7A6C;
-  color: white;
-  padding: 12px;
-  text-align: center;
-}
+.reservations-table { grid-template-columns: 0.8fr 2fr 2fr 1.2fr 1.2fr 1.2fr; } /* 6 Columns */
+.reservations-header .reservations-cell:nth-child(1), .reservations-header .reservations-cell:nth-child(5) { text-align: center; }
 
-.books-row {
-  display: contents;
+.borrow-table {
+  /* BorrowID, User(Name), Book(Title), BorrowDate, DueDate, StatusButton, ReturnDate */
+  grid-template-columns: 0.7fr 1.5fr 1.5fr 1.2fr 1.2fr 1.3fr 1.2fr; /* 7 columns */
 }
+.borrow-header .borrow-cell:nth-child(1),.borrow-header .borrow-cell:nth-child(6),.borrow-header .borrow-cell:nth-child(7) { text-align: center; }
+.borrow-row .borrow-cell:nth-child(1),.borrow-row .borrow-cell:nth-child(6),.borrow-row .borrow-cell:nth-child(7) { justify-content: center; text-align: center; }
+.borrow-status-action-cell { justify-content: center; }
 
-.books-row:nth-child(odd) .books-cell {
-  background: #f7f1ec;
-}
 
-.books-row:nth-child(even) .books-cell {
-  background: white;
-}
-
-.books-cell {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  align-items: center;
-}
-
-.books-cell input {
-  width: 100%;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.book-image {
-  width: 80px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  margin-top: 5px;
-}
+/* === ACTIONS CELL CONTENT (Common for all tables) === */
+.actions-cell-content { display: flex; gap: 8px; justify-content: center; width: 100%; }
 
 /* === COMMON BUTTON STYLES === */
-.action-button {
-  padding: 6px 12px;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: opacity 0.3s ease;
+.action-button, .delete-button, .edit-btn,
+.mark-returned-action-button, .returned-status-button {
+  padding: 6px 12px; color: white; border: none; border-radius: 5px; cursor: pointer;
+  font-size: 0.88em; transition: background-color 0.2s ease, transform 0.1s ease;
+  min-width: 65px; text-align: center; font-weight: 500;
+  box-sizing: border-box; display: inline-block; width: auto; /* Allow natural width */
 }
+.action-button:hover, .delete-button:hover, .edit-btn:hover, .mark-returned-action-button:hover { opacity: 0.9; }
+.action-button:active, .delete-button:active, .edit-btn:active, .mark-returned-action-button:active { transform: translateY(1px); }
 
-.action-button:hover {
-  opacity: 0.8;
-}
+.action-button { background: #5D7A8C; }
+.delete-button { background: #D9534F; }
+.edit-btn { background: #4A90E2 !important; }
 
-.action-button {
-  background: #596288;
-}
+.mark-returned-action-button { background-color: #5cb85c; color: white; }
+.mark-returned-action-button:hover { background-color: #4cae4c; }
+.returned-status-button { background-color: #777; color: #fff; cursor: not-allowed; opacity: 0.7; }
+.returned-status-button:hover { background-color: #777; opacity: 0.7; }
 
-.delete-button {
-  background: #d9534f;
+/* === ADD NEW BUTTONS === */
+.add-book-btn, .add-user-btn, .add-reservation-btn, .add-borrow-btn {
+  margin-bottom: 25px; background: #596288; color: white; padding: 11px 22px;
+  border: none; border-radius: 22px; font-weight: bold; cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease; display: block;
+  width: fit-content; margin-left: auto; margin-right: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.08);
 }
-
-.edit-btn {
-  background: #4a90e2 !important;
-}
-
-/* === ADD BUTTONS === */
-.add-book-btn,
-.add-user-btn {
-  margin-top: 20px;
-  background: #596288;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.add-book-btn:hover,
-.add-user-btn:hover {
-  background: #485073;
-}
+.add-book-btn:hover, .add-user-btn:hover, .add-reservation-btn:hover, .add-borrow-btn:hover { background: #485073; box-shadow: 0 3px 7px rgba(0,0,0,0.12); }
 
 /* === FORMS === */
-.user-form,
-.book-form {
-  margin-top: 20px;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.user-form, .book-form, .reservation-form, .borrow-form {
+  margin-top: 20px; padding: 25px; background: #FDFDFD; border-radius: 8px;
+  border: 1px solid #D3C9C1; box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.form-group input,
+.user-form h3, .book-form h3, .reservation-form h3, .borrow-form h3 { text-align: center; margin-top: 0; margin-bottom: 22px; color: #5C4B51; font-size: 1.3em; }
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; margin-bottom: 7px; font-weight: 500; color: #444; font-size: 0.92em; }
+.form-group input[type="text"], .form-group input[type="email"], .form-group input[type="password"],
+.form-group input[type="number"], .form-group input[type="tel"], .form-group input[type="date"],
 .form-group select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 100%; padding: 10px 12px; border: 1px solid #CCC; border-radius: 5px;
+  box-sizing: border-box; font-size: 0.95em; background-color: #fff;
 }
+.form-group input[type="file"] { padding: 8px; border: 1px solid #CCC; border-radius: 5px; width: 100%; box-sizing: border-box; background-color: #fff; }
+.form-group input:focus, .form-group select:focus { border-color: #9E7A6C; outline: none; box-shadow: 0 0 0 3px rgba(158, 122, 108, 0.2); }
+.user-form .add-user-btn, .book-form .add-book-btn,
+.reservation-form .add-reservation-btn, .borrow-form .add-borrow-btn { display: block; width: 100%; margin-top: 15px; padding: 12px; font-size: 1em; }
 
-/* === GENRE DROPDOWN === */
-.genre-dropdown {
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  width: 100%;
+/* === ERROR TEXT === */
+.error-text { color: #D83A56; font-size: 0.87em; font-weight: 500; margin-top: 5px; display: block; min-height: 1.1em; }
+
+/* === CATEGORY CARDS === */
+.admin-categories-cards { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; max-width: 992px; margin: 35px auto 25px; }
+.category-card {
+  flex-basis: 200px; flex-grow: 1; max-width: 225px; height: 170px; background: #E9DED4;
+  border-radius: 10px; cursor: pointer; text-align: center; padding: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
+.category-card:hover { transform: translateY(-4px); box-shadow: 0 5px 10px rgba(0,0,0,0.12); }
+.card-img { margin-bottom: 12px; background-size: contain; background-repeat: no-repeat; background-position: center; }
+/* !!! IMPORTANT: VERIFY THESE PATHS ARE CORRECT RELATIVE TO YOUR CSS FILE !!! */
+.books-icon { background-image: url('../assets/books-stack-of-three-removebg-preview.png'); width: 90px; height: 90px; }
+.users-icon { background-image: url('../assets/group-removebg-preview.png'); width: 90px; height: 90px; }
+.reservations-icon { background-image: url('../assets/reservation-removebg-preview.png'); width: 85px; height: 85px; }
+.borrow-icon { background-image: url('../assets/book-removebg-preview.png'); width: 95px; height: 95px; }
+.card-label { font-family: 'Karla', sans-serif; font-size: 1.1em; color: #333; font-weight: 500; }
 
 /* === RESPONSIVE DESIGN === */
 @media (max-width: 768px) {
-  .users-table,
-  .books-table {
-    grid-template-columns: 1fr;
-    display: block;
-  }
-
-  .users-header,
-  .books-header {
-    display: none;
-  }
-
-  .users-row,
-  .books-row {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .users-cell,
-  .books-cell {
-    padding: 8px;
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .users-cell::before,
-  .books-cell::before {
-    content: attr(data-label);
-    font-weight: bold;
-    margin-right: 10px;
-  }
-
-  .actions-cell {
-    justify-content: flex-start;
-  }
-}
-
-/* === RESERVATIONS TABLE === */
-.reservations-view {
-  padding: 20px;
-  background: #E9DED4;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.reservations-table {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.reservations-header {
-  display: contents;
-  font-weight: bold;
-}
-
-.reservations-header .reservations-cell {
-  background: #9E7A6C;
-  color: white;
-  padding: 12px;
-  text-align: center;
-}
-
-.reservations-row {
-  display: contents;
-}
-
-.reservations-row:nth-child(odd) .reservations-cell {
-  background: #f7f1ec;
-}
-
-.reservations-row:nth-child(even) .reservations-cell {
-  background: white;
-}
-
-.reservations-cell {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  align-items: center;
-}
-
-.status-dropdown {
-  width: 100%;
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-/* === BORROW TABLE === */
-.borrow-view {
-  padding: 20px;
-  background: #E9DED4;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.borrow-table {
-  display: grid;
-  grid-template-columns: 0.8fr 1.5fr 1.5fr 1.8fr 1.5fr 1fr; /* Added 6th column for checkbox */
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  overflow: hidden;
-  margin-top: 20px;
-}
-
-.borrow-header {
-  display: contents;
-  font-weight: bold;
-}
-
-.borrow-header .borrow-cell {
-  background: #9E7A6C;
-  color: white;
-  padding: 12px;
-  text-align: center;
-}
-
-.borrow-row {
-  display: contents;
-}
-
-.borrow-row:nth-child(odd) .borrow-cell {
-  background: #f7f1ec;
-}
-
-.borrow-row:nth-child(even) .borrow-cell {
-  background: white;
-}
-
-.borrow-cell {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Align text left except checkbox column */
-.borrow-cell:not(:last-child) {
-  justify-content: flex-start;
-}
-
-/* Checkbox cell */
-.borrow-checkbox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Style checkboxes */
-.borrow-cell input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
-
-/* === FORM === */
-.borrow-form {
-  margin-top: 20px;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  max-width: 600px;
-}
-
-.borrow-form .form-group {
-  margin-bottom: 15px;
-}
-
-.borrow-form .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.borrow-form .form-group input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* --- Error Text --- */
-.error-text {
-  color: #D83A56;
-  font-size: 13px;
-  font-weight: 500;
-  margin-top: 6px;
-  padding-left: 5px;
-  min-height: 18px;
-  display: block;
-}
-
-/* === CATEGORY CARDS === */
-.admin-categories-cards {
-  display: flex;
-  justify-content: space-between;
-  max-width: 992px;
-  margin: 40px auto 0;
-  position: relative;
-}
-
-.category-card {
-  width: 220px;
-  height: 174px;
-  background: #E9DED4;
-  border-radius: 8px;
-  cursor: pointer;
-  text-align: center;
-  position: relative;
-  transition: transform 0.2s ease;
-}
-
-.category-card:hover {
-  transform: scale(1.03);
-}
-
-.card-img {
-  width: 106px;
-  height: 106px;
-  margin: 15px auto 10px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.books-icon {
-  background-image: url('../assets/books-stack-of-three-removebg-preview.png');
-}
-
-.users-icon {
-  background-image: url('../assets/group-removebg-preview.png');
-}
-
-.reservations-icon {
-  background-image: url('../assets/reservation-removebg-preview.png');
-  width: 100px;
-  height: 100px;
-}
-
-.borrow-icon {
-  background-image: url('../assets/book-removebg-preview.png');
-  width: 112px;
-  height: 112px;
-}
-
-.card-label {
-  font-family: 'Karla', sans-serif;
-  font-size: 20px;
-  color: #000;
-}
-
-/* === CONTENT CONTAINER === */
-.admin-content {
-  padding: 20px;
-  max-width: 992px;
-  margin: 0 auto;
-}
-
-.add-borrow-btn {
-  margin-top: 20px;
-  background: #596288;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.add-borrow-btn:hover {
-  background: #485073;
+  .admin-view-container { padding: 15px; }
+  .admin-view-container h2 { font-size: 1.5em; margin-bottom: 20px; }
+  .users-table, .books-table, .reservations-table, .borrow-table { grid-template-columns: 1fr !important; border-left: none; border-right: none; border-radius: 0; font-size: 0.9em; }
+  .users-header, .books-header, .reservations-header, .borrow-header { display: none; }
+  .users-cell, .books-cell, .reservations-cell, .borrow-cell { display: flex; justify-content: space-between; align-items: center; padding: 10px 8px; border-right: none; background-color: #FFFFFF !important; }
+  .users-row .users-cell:last-of-type, .books-row .books-cell:last-of-type, .reservations-row .reservations-cell:last-of-type, .borrow-row .borrow-cell:last-of-type { border-bottom: 2px solid #BEA895; }
+  .users-row:last-child .users-cell:last-of-type, .books-row:last-child .books-cell:last-of-type, .reservations-row:last-child .reservations-cell:last-of-type, .borrow-row:last-child .borrow-cell:last-of-type { border-bottom: none; }
+  .users-cell::before, .books-cell::before, .reservations-cell::before, .borrow-cell::before { content: attr(data-label); font-weight: 600; margin-right: 10px; color: #555; min-width: 80px; flex-shrink: 0; }
+  .actions-cell-content { flex-direction: row; flex-wrap: wrap; justify-content: flex-end; gap: 5px; }
+  .actions-cell-content .action-button, .actions-cell-content .delete-button, .actions-cell-content .edit-btn { padding: 5px 8px; font-size: 0.8em; }
+  .book-cover-actions-cell { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .book-cover-actions-cell .book-image { width: 60px; height: 90px; }
+  .book-cover-actions-cell .cell-actions { flex-direction: row; width: 100%; margin-top: 5px; gap: 6px; }
+  .book-cover-actions-cell .image-edit-area input[type="file"] { width: 100%; max-width: none; font-size: 0.8em; }
+  .add-book-btn, .add-user-btn, .add-reservation-btn, .add-borrow-btn { padding: 10px 18px; font-size: 0.95em; }
+  .form-group input, .form-group select { padding: 9px 10px; font-size: 0.9em; }
 }
